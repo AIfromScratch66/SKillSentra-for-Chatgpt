@@ -1,0 +1,14 @@
+{
+  "name": "skillsentra-for-chatgpt",
+  "version": "0.8.0",
+  "private": true,
+  "description": "Evidence-bound Agent Skill lifecycle workspace adapted for ChatGPT",
+  "scripts": {
+    "check:js": "node --check demo-apple/i18n.js && node --check demo-apple/ai-truth.js && node --check demo-apple/app.js && node --check demo-apple/platform.js && node --check demo-apple/marketplace.js",
+    "test:e2e": "node --test tests/e2e/ai-truth.contract.test.cjs tests/e2e/studio.e2e.test.cjs",
+    "capture:ui": "node scripts/capture-ui.cjs evidence/visual"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}

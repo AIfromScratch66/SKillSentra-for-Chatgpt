@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 280" role="img" aria-labelledby="title description">
+  <title id="title">SkillSentra refined mark</title>
+  <desc id="description">Three smoothly flowing arcs start on one shared circle and form a continuous regenerative cycle</desc>
+  <defs>
+    <linearGradient id="blueDepth" x1="48" y1="42" x2="206" y2="226" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8BE3FF"/><stop offset="0.22" stop-color="#299DFF"/><stop offset="0.58" stop-color="#0A84FF"/><stop offset="1" stop-color="#0057BC"/>
+    </linearGradient>
+    <linearGradient id="inkDepth" x1="38" y1="92" x2="166" y2="218" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#696970"/><stop offset="0.34" stop-color="#303034"/><stop offset="0.7" stop-color="#161618"/><stop offset="1" stop-color="#050506"/>
+    </linearGradient>
+    <radialGradient id="nodeDepth" cx="32%" cy="27%" r="76%">
+      <stop offset="0" stop-color="#85858D"/><stop offset="0.42" stop-color="#303034"/><stop offset="1" stop-color="#070708"/>
+    </radialGradient>
+    <radialGradient id="blueCap" cx="31%" cy="26%" r="78%">
+      <stop offset="0" stop-color="#B8F1FF"/><stop offset="0.26" stop-color="#4AB5FF"/><stop offset="0.62" stop-color="#0A84FF"/><stop offset="1" stop-color="#0054B5"/>
+    </radialGradient>
+    <radialGradient id="inkCap" cx="31%" cy="26%" r="78%">
+      <stop offset="0" stop-color="#8A8A92"/><stop offset="0.3" stop-color="#45454A"/><stop offset="0.66" stop-color="#1A1A1D"/><stop offset="1" stop-color="#050506"/>
+    </radialGradient>
+    <linearGradient id="blueTaper" x1="0" y1="-15" x2="0" y2="15" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#58C4FF"/><stop offset="0.44" stop-color="#128EFF"/><stop offset="1" stop-color="#0067D6"/>
+    </linearGradient>
+    <linearGradient id="inkTaper" x1="0" y1="-15" x2="0" y2="15" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5A5A60"/><stop offset="0.44" stop-color="#28282B"/><stop offset="1" stop-color="#0C0C0D"/>
+    </linearGradient>
+    <path id="taperTip" d="M4-4C11-4 17-11 24-15H34V15H24C17 11 11 4 4 4A4 4 0 1 1 4-4Z"/>
+    <mask id="topArcMask" maskUnits="userSpaceOnUse" x="0" y="0" width="252" height="280">
+      <path d="M44.1 129.3C40 116 39 100 50 82C75 40 126 28 174 55.9" fill="none" stroke="#FFFFFF" stroke-width="30" stroke-linecap="round"/>
+      <use href="#taperTip" transform="translate(59 153) rotate(-122.2)" fill="#FFFFFF"/>
+    </mask>
+    <mask id="blackArcMask" maskUnits="userSpaceOnUse" x="0" y="0" width="252" height="280">
+      <path d="M30 139C47 189 91 216 121.3 207.8" fill="none" stroke="#FFFFFF" stroke-width="30" stroke-linecap="round"/>
+      <use href="#taperTip" transform="translate(145 193) rotate(148)" fill="#FFFFFF"/>
+    </mask>
+    <mask id="innerArcMask" maskUnits="userSpaceOnUse" x="0" y="0" width="252" height="280">
+      <path d="M106.2 87C116 87 126 90 143 96C190 112 213 172 174 222.1" fill="none" stroke="#FFFFFF" stroke-width="30" stroke-linecap="round"/>
+      <use href="#taperTip" transform="translate(84 104) rotate(-37.4)" fill="#FFFFFF"/>
+    </mask>
+    <g id="blueArcMaster" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M84 104C101 91 121 89 143 96C190 112 213 172 174 222.1" stroke="url(#blueDepth)" stroke-width="30" mask="url(#innerArcMask)"/>
+      <path d="M83 102C100 89 120 87 142 94C189 110 212 170 173 220.1" stroke="#FFFFFF" stroke-opacity="0.16" stroke-width="3.6" mask="url(#innerArcMask)"/>
+    </g>
+    <g id="inkArcMaster" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M84 104C101 91 121 89 143 96C190 112 213 172 174 222.1" stroke="url(#inkDepth)" stroke-width="30" mask="url(#innerArcMask)"/>
+      <path d="M83 102C100 89 120 87 142 94C189 110 212 170 173 220.1" stroke="#FFFFFF" stroke-opacity="0.1" stroke-width="3.2" mask="url(#innerArcMask)"/>
+    </g>
+    <filter id="markShadow" x="-20%" y="-22%" width="150%" height="160%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#000000" flood-opacity="0.26"/>
+    </filter>
+  </defs>
+
+  <!-- Shared start circle: center (126,139), radius 96; starts at -60°, 60°, and 180°. -->
+  <g transform="translate(14 1)" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#markShadow)">
+    <use href="#blueArcMaster" transform="translate(174 55.9) rotate(-92.9) translate(-174 -222.1)"/>
+    <use href="#inkArcMaster" transform="translate(30 139) rotate(145.4) translate(-174 -222.1)"/>
+    <use href="#blueArcMaster"/>
+    <circle cx="174" cy="55.9" r="16" fill="url(#blueCap)" stroke="none"/>
+    <circle cx="30" cy="139" r="16" fill="url(#inkCap)" stroke="none"/>
+    <circle cx="174" cy="222.1" r="16" fill="url(#blueCap)" stroke="none"/>
+    <ellipse cx="168.5" cy="50.4" rx="4.2" ry="3" fill="#FFFFFF" fill-opacity="0.22" stroke="none"/>
+    <ellipse cx="24.5" cy="133.5" rx="4.2" ry="3" fill="#FFFFFF" fill-opacity="0.17" stroke="none"/>
+    <ellipse cx="168.5" cy="216.6" rx="4.2" ry="3" fill="#FFFFFF" fill-opacity="0.22" stroke="none"/>
+    <circle cx="126" cy="139" r="21" fill="url(#nodeDepth)" stroke="none"/>
+    <ellipse cx="118.5" cy="131.5" rx="5.8" ry="4" fill="#FFFFFF" fill-opacity="0.2" stroke="none"/>
+  </g>
+</svg>

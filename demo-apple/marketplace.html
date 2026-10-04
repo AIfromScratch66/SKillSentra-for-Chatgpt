@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Discover, create, publish and evaluate trusted Agent Skills with SkillSentra">
+  <meta name="color-scheme" content="light dark">
+  <title>SkillSentra · Skill 市场</title>
+  <link rel="icon" href="skillsentra-icon.png?v=0.6.4" type="image/png" sizes="512x512">
+  <link rel="stylesheet" href="marketplace.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="SkillSentra 首页">
+      <img class="brand-logo" src="skillsentra-logo-transparent.png" alt="">
+    </a>
+    <nav class="site-nav" aria-label="主导航">
+      <a href="#discover" data-copy="navDiscover">发现</a>
+      <a href="#ranking" data-copy="navRanking">排行榜</a>
+      <button type="button" class="nav-button" data-action="creator" data-copy="navCreator">创作者中心</button>
+      <a href="platform.html" data-copy="navAdmin">管理后台</a>
+    </nav>
+    <details class="mobile-nav">
+      <summary aria-label="打开主导航"><span aria-hidden="true"></span></summary>
+      <nav class="mobile-nav-panel" aria-label="移动端主导航">
+        <a href="#discover" data-copy="navDiscover">发现</a>
+        <a href="#ranking" data-copy="navRanking">排行榜</a>
+        <button type="button" data-action="creator" data-copy="navCreator">创作者中心</button>
+        <a href="platform.html" data-copy="navAdmin">管理后台</a>
+      </nav>
+    </details>
+    <div class="header-actions">
+      <div class="language-switch" role="group" aria-label="界面语言">
+        <button type="button" data-language="zh-CN" class="is-active" aria-pressed="true">中</button>
+        <button type="button" data-language="en" aria-pressed="false">EN</button>
+      </div>
+      <button type="button" class="text-button" data-action="login" data-copy="signIn">登录</button>
+      <button type="button" class="primary compact" data-action="register" data-copy="startFree">免费开始</button>
+      <button type="button" class="account-button" data-action="account" aria-label="当前账户" hidden><span aria-hidden="true">U</span></button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow" data-copy="heroEyebrow">SKILL DISCOVERY · CREATION · TRUST</span>
+        <h1><span data-copy="heroLine1">找到好用的 Skill。</span><br><em data-copy="heroLine2">每一次选择，都有证据。</em></h1>
+        <p data-copy="heroBody">发现社区优秀作品，用可验证流程创建和优化自己的 Skill，自主设置免费或收费，并让真实用户评价决定长期排名。</p>
+        <div class="hero-actions">
+          <a class="primary" href="studio.html" data-copy="createSkill">创建我的 Skill</a>
+          <a class="secondary" href="#ranking" data-copy="viewRanking">查看排行榜</a>
+        </div>
+        <div class="trust-row" aria-label="平台信任能力">
+          <span><i>✓</i><b data-copy="trustDigest">不可变 Digest</b></span>
+          <span><i>✓</i><b data-copy="trustReview">真实获取后评价</b></span>
+          <span><i>✓</i><b data-copy="trustBilling">透明沙箱计费</b></span>
+        </div>
+      </div>
+      <div class="hero-signal" aria-hidden="true">
+        <div class="signal-orbit orbit-one"><i></i></div>
+        <div class="signal-orbit orbit-two"><i></i></div>
+        <div class="signal-orbit orbit-three"><i></i></div>
+        <img src="skillsentra-icon.png" alt="">
+      </div>
+    </section>
+
+    <section class="ranking-section" id="ranking">
+      <header class="section-head">
+        <div><span class="eyebrow" id="ranking-eyebrow" data-copy="rankingEyebrow">COMMUNITY SIGNAL</span><h2 id="ranking-title" data-copy="rankingTitle">本周 Skill 排行榜</h2><p id="ranking-body" data-copy="rankingBody">综合用户评分、评价数量与真实获取量生成，收费高低不影响排名。</p></div>
+        <span class="live-pill"><i></i><span id="ranking-live-label" data-copy="liveRanking">动态更新</span></span>
+      </header>
+      <nav class="ranking-source-tabs" id="ranking-source-tabs" aria-label="排行榜来源" hidden></nav>
+      <div class="podium" id="podium" aria-live="polite"></div>
+      <div class="ranking-list" id="ranking-list"></div>
+      <nav class="ranking-pagination" id="github-pagination" aria-label="GitHub 星标榜分页" hidden></nav>
+    </section>
+
+    <section class="discover-section" id="discover" aria-labelledby="discover-title" aria-busy="true">
+      <header class="section-head">
+        <div><span class="eyebrow" data-copy="discoverEyebrow">EXPLORE SKILLS</span><h2 id="discover-title" data-copy="discoverTitle">按你的工作方式发现</h2></div>
+        <div class="catalog-tools">
+          <label class="search-box"><span aria-hidden="true">⌕</span><input id="search" type="search" data-placeholder="searchPlaceholder" placeholder="搜索 Skill 或能力"></label>
+          <select id="pricing-filter" aria-label="价格筛选"><option value="" data-copy="allPricing">全部价格</option><option value="free" data-copy="free">免费</option><option value="paid" data-copy="paid">收费</option></select>
+        </div>
+      </header>
+      <div class="category-row" id="category-row"></div>
+      <div class="catalog-status" id="catalog-status" role="status" aria-live="polite" aria-atomic="true">
+        <div class="empty-state catalog-state is-loading">
+          <span class="catalog-loader" aria-hidden="true"><i></i><i></i><i></i></span>
+          <div><strong>正在加载 Skill</strong><span>正在读取可验证的发布目录…</span></div>
+        </div>
+      </div>
+      <div class="skill-grid" id="skill-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="creator-story">
+      <div><span class="eyebrow" data-copy="creatorEyebrow">FOR CREATORS</span><h2 data-copy="creatorTitle">从想法到发布，不再跨越五个平台。</h2></div>
+      <ol>
+        <li><span>01</span><div><strong data-copy="stepCreate">创建与优化</strong><p data-copy="stepCreateBody">模板或现有 Skill，两条证据化路线。</p></div></li>
+        <li><span>02</span><div><strong data-copy="stepVerify">测试与交付</strong><p data-copy="stepVerifyBody">结构、安全、回归硬门独立验证。</p></div></li>
+        <li><span>03</span><div><strong data-copy="stepPublish">定价与发布</strong><p data-copy="stepPublishBody">自主选择免费或收费，版本始终可追溯。</p></div></li>
+        <li><span>04</span><div><strong data-copy="stepGrow">评价与结算</strong><p data-copy="stepGrowBody">真实获取后评价，收入形成可对账分录。</p></div></li>
+      </ol>
+      <button class="primary" type="button" data-action="creator" data-copy="openCreator">打开创作者中心</button>
+    </section>
+  </main>
+
+  <footer><div class="footer-brand"><img src="skillsentra-icon.png" alt="SkillSentra"><small data-copy="footerLine">让 Skill 的价值可创建、可验证、可结算</small></div><span data-copy="footerState">v0.6 · 策展 Private Beta · 生产付款关闭</span></footer>
+
+  <div class="modal-backdrop" id="modal-backdrop" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button type="button" class="modal-close" data-action="close-modal" aria-label="关闭">×</button>
+      <div id="modal-content"></div>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="marketplace.js?v=20260829-marketplace-ux-6"></script>
+</body>
+</html>

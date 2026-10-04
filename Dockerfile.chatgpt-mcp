@@ -1,0 +1,17 @@
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    SKILLSENTRA_CHATGPT_MCP_HOST=0.0.0.0 \
+    SKILLSENTRA_CHATGPT_MCP_PORT=8787
+
+WORKDIR /opt/skillsentra
+
+COPY --chown=65532:65532 plugins/skillsentra/.codex-plugin/ ./.codex-plugin/
+COPY --chown=65532:65532 plugins/skillsentra/scripts/ ./scripts/
+
+USER 65532:65532
+
+EXPOSE 8787
+
+CMD ["python", "-B", "scripts/chatgpt_mcp_server.py"]

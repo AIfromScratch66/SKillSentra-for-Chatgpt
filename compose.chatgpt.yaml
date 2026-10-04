@@ -1,0 +1,45 @@
+services:
+  skillsentra:
+    ports:
+      - "127.0.0.1:8787:8787"
+
+  skillsentra-chatgpt-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile.chatgpt-mcp
+    image: skillsentra-for-chatgpt-mcp:0.8.0
+    restart: unless-stopped
+    init: true
+    read_only: true
+    network_mode: "service:skillsentra"
+    depends_on:
+      skillsentra:
+        condition: service_healthy
+    environment:
+      SKILLSENTRA_BASE_URL: http://127.0.0.1:8766
+      SKILLSENTRA_CHATGPT_MCP_HOST: 0.0.0.0
+      SKILLSENTRA_CHATGPT_MCP_PORT: 8787
+      SKILLSENTRA_CHATGPT_ALLOWED_ORIGINS: ${SKILLSENTRA_CHATGPT_ALLOWED_ORIGINS:-}
+      SKILLSENTRA_CHATGPT_MCP_AUTH_TOKEN: ${SKILLSENTRA_CHATGPT_MCP_AUTH_TOKEN:?Set a dedicated gateway secret}
+      SKILLSENTRA_API_TOKEN: ${SKILLSENTRA_API_TOKEN:?Set a separate SkillSentra service token}
+      SKILLSENTRA_CHATGPT_ALLOW_ANONYMOUS_LOOPBACK: "false"
+      SKILLSENTRA_CHATGPT_MCP_MAX_CONCURRENCY: "16"
+      SKILLSENTRA_CHATGPT_MCP_SOCKET_TIMEOUT_SECONDS: "15"
+      SKILLSENTRA_CHATGPT_MCP_HEADER_TIMEOUT_SECONDS: "10"
+      SKILLSENTRA_CHATGPT_MCP_BODY_TIMEOUT_SECONDS: "30"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - import urllib.request; urllib.request.urlopen('http://127.0.0.1:8787/healthz', timeout=2).read()
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    pids_limit: 64
+    mem_limit: 256m
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL

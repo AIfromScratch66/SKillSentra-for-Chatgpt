@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 280" role="img" aria-labelledby="title description">
+  <title id="title">SkillSentra</title>
+  <desc id="description">Three flowing arcs form a continuous evidence cycle</desc>
+  <defs>
+    <style>
+      .dark-ink-outline,.dark-cap-outline,.dark-node-outline{opacity:0}
+      @media (prefers-color-scheme:dark){
+        .dark-ink-outline,.dark-cap-outline,.dark-node-outline{opacity:.72}
+      }
+    </style>
+    <linearGradient id="blue" x1="48" y1="42" x2="206" y2="226" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8BE3FF"/><stop offset=".22" stop-color="#299DFF"/><stop offset=".58" stop-color="#0A84FF"/><stop offset="1" stop-color="#0057BC"/>
+    </linearGradient>
+    <linearGradient id="ink" x1="38" y1="92" x2="166" y2="218" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#696970"/><stop offset=".34" stop-color="#303034"/><stop offset=".7" stop-color="#161618"/><stop offset="1" stop-color="#050506"/>
+    </linearGradient>
+    <radialGradient id="blueCap" cx="31%" cy="26%" r="78%"><stop offset="0" stop-color="#B8F1FF"/><stop offset=".26" stop-color="#4AB5FF"/><stop offset=".62" stop-color="#0A84FF"/><stop offset="1" stop-color="#0054B5"/></radialGradient>
+    <radialGradient id="inkCap" cx="31%" cy="26%" r="78%"><stop offset="0" stop-color="#8A8A92"/><stop offset=".3" stop-color="#45454A"/><stop offset=".66" stop-color="#1A1A1D"/><stop offset="1" stop-color="#050506"/></radialGradient>
+    <radialGradient id="node" cx="32%" cy="27%" r="76%"><stop offset="0" stop-color="#85858D"/><stop offset=".42" stop-color="#303034"/><stop offset="1" stop-color="#070708"/></radialGradient>
+    <path id="tip" d="M4-4C11-4 17-11 24-15H34V15H24C17 11 11 4 4 4A4 4 0 1 1 4-4Z"/>
+    <mask id="arcMask" maskUnits="userSpaceOnUse" x="0" y="0" width="252" height="280">
+      <path d="M106.2 87C116 87 126 90 143 96C190 112 213 172 174 222.1" fill="none" stroke="#fff" stroke-width="30" stroke-linecap="round"/>
+      <use href="#tip" transform="translate(84 104) rotate(-37.4)" fill="#fff"/>
+    </mask>
+    <g id="blueArc" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M84 104C101 91 121 89 143 96C190 112 213 172 174 222.1" stroke="url(#blue)" stroke-width="30" mask="url(#arcMask)"/>
+      <path d="M83 102C100 89 120 87 142 94C189 110 212 170 173 220.1" stroke="#fff" stroke-opacity=".16" stroke-width="3.6" mask="url(#arcMask)"/>
+    </g>
+    <g id="inkArc" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path class="dark-ink-outline" d="M84 104C101 91 121 89 143 96C190 112 213 172 174 222.1" stroke="#dbe6f3" stroke-width="34" mask="url(#arcMask)"/>
+      <path d="M84 104C101 91 121 89 143 96C190 112 213 172 174 222.1" stroke="url(#ink)" stroke-width="30" mask="url(#arcMask)"/>
+      <path d="M83 102C100 89 120 87 142 94C189 110 212 170 173 220.1" stroke="#fff" stroke-opacity=".1" stroke-width="3.2" mask="url(#arcMask)"/>
+    </g>
+    <filter id="shadow" x="-20%" y="-22%" width="150%" height="160%"><feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#000" flood-opacity=".26"/></filter>
+  </defs>
+  <g transform="translate(14 1)" filter="url(#shadow)">
+    <use href="#blueArc" transform="translate(174 55.9) rotate(-92.9) translate(-174 -222.1)"/>
+    <use href="#inkArc" transform="translate(30 139) rotate(145.4) translate(-174 -222.1)"/>
+    <use href="#blueArc"/>
+    <circle class="dark-cap-outline" cx="30" cy="139" r="18" fill="#dbe6f3"/>
+    <circle cx="174" cy="55.9" r="16" fill="url(#blueCap)"/><circle cx="30" cy="139" r="16" fill="url(#inkCap)"/><circle cx="174" cy="222.1" r="16" fill="url(#blueCap)"/>
+    <ellipse cx="168.5" cy="50.4" rx="4.2" ry="3" fill="#fff" fill-opacity=".22"/><ellipse cx="24.5" cy="133.5" rx="4.2" ry="3" fill="#fff" fill-opacity=".17"/><ellipse cx="168.5" cy="216.6" rx="4.2" ry="3" fill="#fff" fill-opacity=".22"/>
+    <circle class="dark-node-outline" cx="126" cy="139" r="23" fill="#dbe6f3"/>
+    <circle cx="126" cy="139" r="21" fill="url(#node)"/><ellipse cx="118.5" cy="131.5" rx="5.8" ry="4" fill="#fff" fill-opacity=".2"/>
+  </g>
+</svg>

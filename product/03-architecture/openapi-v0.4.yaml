@@ -1,0 +1,688 @@
+openapi: 3.1.0
+info:
+  title: SkillSentra API
+  version: 0.4.0
+  description: >-
+    Skill creation, account, marketplace, automated discovery and evidence
+    control-plane API for the single-node Private Beta. Production payout is not available.
+servers:
+  - url: https://skillsentra.example.com
+security:
+  - bearerAuth: []
+  - cookieAuth: []
+tags:
+  - name: System
+  - name: Accounts
+  - name: Projects
+  - name: Marketplace
+  - name: Automation
+  - name: Control Plane
+paths:
+  /api/health:
+    get:
+      tags: [System]
+      security: []
+      operationId: health
+      responses:
+        '200':
+          description: Service is ready.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Envelope'}
+  /api/v1/session:
+    get:
+      tags: [System]
+      operationId: session
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '401': {$ref: '#/components/responses/Error'}
+  /api/v1/bootstrap:
+    get:
+      tags: [Projects]
+      operationId: bootstrap
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/projects:
+    get:
+      tags: [Projects]
+      operationId: listProjects
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+    post:
+      tags: [Projects]
+      operationId: createProject
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '400': {$ref: '#/components/responses/Error'}
+  /api/v1/projects/{projectId}:
+    parameters:
+      - $ref: '#/components/parameters/ProjectId'
+    get:
+      tags: [Projects]
+      operationId: getProject
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '404': {$ref: '#/components/responses/Error'}
+  /api/v1/projects/{projectId}/steps/{stepIndex}:
+    parameters:
+      - $ref: '#/components/parameters/ProjectId'
+      - name: stepIndex
+        in: path
+        required: true
+        schema: {type: integer, minimum: 0}
+    put:
+      tags: [Projects]
+      operationId: saveProjectStep
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '409': {$ref: '#/components/responses/Error'}
+  /api/v1/projects/{projectId}/import:
+    parameters: [{$ref: '#/components/parameters/ProjectId'}]
+    post:
+      tags: [Projects]
+      operationId: importSkill
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/projects/{projectId}/candidate:
+    parameters: [{$ref: '#/components/parameters/ProjectId'}]
+    post:
+      tags: [Projects]
+      operationId: generateCandidate
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/projects/{projectId}/validations:
+    parameters: [{$ref: '#/components/parameters/ProjectId'}]
+    get:
+      tags: [Projects]
+      operationId: listValidations
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+    post:
+      tags: [Projects]
+      operationId: runValidation
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/projects/{projectId}/deliveries:
+    parameters: [{$ref: '#/components/parameters/ProjectId'}]
+    post:
+      tags: [Projects]
+      operationId: deliverSkill
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '409': {$ref: '#/components/responses/Error'}
+  /api/v1/projects/{projectId}/ai-orchestrations:
+    parameters: [{$ref: '#/components/parameters/ProjectId'}]
+    post:
+      tags: [Projects]
+      operationId: orchestrateAiRoles
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/projects/{projectId}/ai-policy:
+    parameters: [{$ref: '#/components/parameters/ProjectId'}]
+    put:
+      tags: [Projects]
+      operationId: saveAiPolicy
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/projects/{projectId}/ai-runs:
+    parameters: [{$ref: '#/components/parameters/ProjectId'}]
+    get:
+      tags: [Projects]
+      operationId: listAiRuns
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+    post:
+      tags: [Projects]
+      operationId: runAiRole
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/projects/{projectId}/audit:
+    parameters: [{$ref: '#/components/parameters/ProjectId'}]
+    get:
+      tags: [Projects]
+      operationId: readProjectAudit
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/projects/{projectId}/versions:
+    parameters: [{$ref: '#/components/parameters/ProjectId'}]
+    get:
+      tags: [Projects]
+      operationId: listSkillVersions
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/projects/{projectId}/versions/{versionId}/download:
+    parameters:
+      - $ref: '#/components/parameters/ProjectId'
+      - name: versionId
+        in: path
+        required: true
+        schema: {type: string}
+    get:
+      tags: [Projects]
+      operationId: downloadSkillVersion
+      responses:
+        '200':
+          description: Immutable Skill ZIP.
+          content:
+            application/zip:
+              schema: {type: string, contentEncoding: binary}
+        '404': {$ref: '#/components/responses/Error'}
+  /api/v1/projects/{projectId}/update-policy:
+    parameters: [{$ref: '#/components/parameters/ProjectId'}]
+    get:
+      tags: [Projects]
+      operationId: getUpdatePolicy
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+    put:
+      tags: [Projects]
+      operationId: saveUpdatePolicy
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/projects/{projectId}/update-checks:
+    parameters: [{$ref: '#/components/parameters/ProjectId'}]
+    get:
+      tags: [Projects]
+      operationId: listUpdateChecks
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+    post:
+      tags: [Projects]
+      operationId: runUpdateCheck
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/update-jobs/run-due:
+    post:
+      tags: [Projects]
+      operationId: runDueUpdateJobs
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/skill-sources:
+    get:
+      tags: [Projects]
+      operationId: listAuthorizedSkillSources
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/skill-sources/{sourceId}/snapshot:
+    parameters:
+      - name: sourceId
+        in: path
+        required: true
+        schema: {type: string}
+    post:
+      tags: [Projects]
+      operationId: snapshotSkillSource
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/ai/connections:
+    get:
+      tags: [Projects]
+      operationId: listAiConnections
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+    post:
+      tags: [Projects]
+      operationId: createAiConnection
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/ai/connections/{connectionId}/test:
+    parameters:
+      - $ref: '#/components/parameters/ConnectionId'
+    post:
+      tags: [Projects]
+      operationId: testAiConnection
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/ai/connections/{connectionId}/models:
+    parameters:
+      - $ref: '#/components/parameters/ConnectionId'
+    get:
+      tags: [Projects]
+      operationId: listConnectionModels
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/control/overview:
+    get:
+      tags: [Control Plane]
+      operationId: controlOverview
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/control/repositories:
+    get:
+      tags: [Control Plane]
+      operationId: listRepositories
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+    post:
+      tags: [Control Plane]
+      operationId: createRepository
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/control/repositories/{repositoryId}/scans:
+    parameters:
+      - name: repositoryId
+        in: path
+        required: true
+        schema: {type: string}
+    post:
+      tags: [Control Plane]
+      operationId: scanRepository
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '409': {$ref: '#/components/responses/Error'}
+  /api/v1/control/snapshots:
+    get:
+      tags: [Control Plane]
+      operationId: listSnapshots
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/control/snapshots/{snapshotId}:
+    parameters:
+      - name: snapshotId
+        in: path
+        required: true
+        schema: {type: string}
+    get:
+      tags: [Control Plane]
+      operationId: getSnapshot
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '404': {$ref: '#/components/responses/Error'}
+  /api/v1/control/evidence:
+    get:
+      tags: [Control Plane]
+      operationId: listEvidence
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/control/agents:
+    get:
+      tags: [Control Plane]
+      operationId: listAgents
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+    post:
+      tags: [Control Plane]
+      operationId: registerAgent
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/control/deployments:
+    get:
+      tags: [Control Plane]
+      operationId: listDeployments
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+    post:
+      tags: [Control Plane]
+      operationId: createDeployment
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '409': {$ref: '#/components/responses/Error'}
+  /api/v1/control/deployments/{deploymentId}/observe:
+    parameters:
+      - name: deploymentId
+        in: path
+        required: true
+        schema: {type: string}
+    post:
+      tags: [Control Plane]
+      operationId: observeDeployment
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/control/revocations:
+    get:
+      tags: [Control Plane]
+      operationId: listRevocations
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+    post:
+      tags: [Control Plane]
+      operationId: revokeArtifact
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/control/entitlements:
+    post:
+      tags: [Control Plane]
+      operationId: createEntitlement
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/control/receipts:
+    get:
+      tags: [Control Plane]
+      operationId: listReceipts
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+    post:
+      tags: [Control Plane]
+      operationId: ingestReceipt
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/control/statements:
+    get:
+      tags: [Control Plane]
+      operationId: listStatements
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+    post:
+      tags: [Control Plane]
+      operationId: createStatement
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/control/statements/{statementId}/payouts:
+    parameters:
+      - name: statementId
+        in: path
+        required: true
+        schema: {type: string}
+    post:
+      tags: [Control Plane]
+      operationId: submitSandboxPayout
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema: {type: string, minLength: 12, maxLength: 200}
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '409': {$ref: '#/components/responses/Error'}
+  /api/v1/control/payouts:
+    get:
+      tags: [Control Plane]
+      operationId: listPayouts
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/control/ledger:
+    get:
+      tags: [Control Plane]
+      operationId: readLedger
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/control/audit:
+    get:
+      tags: [Control Plane]
+      operationId: readAudit
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/control/demo:
+    post:
+      tags: [Control Plane]
+      operationId: runGoldenPathDemo
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/auth/register:
+    post:
+      tags: [Accounts]
+      security: []
+      operationId: registerAccount
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '409': {$ref: '#/components/responses/Error'}
+  /api/v1/auth/login:
+    post:
+      tags: [Accounts]
+      security: []
+      operationId: loginAccount
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '401': {$ref: '#/components/responses/Error'}
+  /api/v1/auth/logout:
+    post:
+      tags: [Accounts]
+      operationId: logoutAccount
+      parameters: [{$ref: '#/components/parameters/CsrfToken'}]
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/marketplace/publications:
+    get:
+      tags: [Marketplace]
+      security: []
+      operationId: listMarketplacePublications
+      parameters:
+        - {name: q, in: query, schema: {type: string, maxLength: 100}}
+        - {name: category, in: query, schema: {type: string}}
+        - {name: pricing, in: query, schema: {type: string, enum: [free, paid]}}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+    post:
+      tags: [Marketplace]
+      operationId: publishSkill
+      parameters: [{$ref: '#/components/parameters/CsrfToken'}]
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '409': {$ref: '#/components/responses/Error'}
+  /api/v1/marketplace/publications/{publicationId}:
+    parameters:
+      - {$ref: '#/components/parameters/PublicationId'}
+    get:
+      tags: [Marketplace]
+      security: []
+      operationId: getMarketplacePublication
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '404': {$ref: '#/components/responses/Error'}
+    put:
+      tags: [Marketplace]
+      operationId: updateMarketplacePublication
+      parameters: [{$ref: '#/components/parameters/CsrfToken'}]
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/marketplace/leaderboard:
+    get:
+      tags: [Marketplace]
+      security: []
+      operationId: marketplaceLeaderboard
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/marketplace/creator:
+    get:
+      tags: [Marketplace]
+      operationId: creatorDashboard
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/marketplace/publications/{publicationId}/purchase:
+    post:
+      tags: [Marketplace]
+      operationId: acquireMarketplaceSkill
+      parameters:
+        - {$ref: '#/components/parameters/PublicationId'}
+        - {$ref: '#/components/parameters/IdempotencyKey'}
+        - {$ref: '#/components/parameters/CsrfToken'}
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '409': {$ref: '#/components/responses/Error'}
+  /api/v1/marketplace/publications/{publicationId}/reviews:
+    post:
+      tags: [Marketplace]
+      operationId: reviewMarketplaceSkill
+      parameters:
+        - {$ref: '#/components/parameters/PublicationId'}
+        - {$ref: '#/components/parameters/CsrfToken'}
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '409': {$ref: '#/components/responses/Error'}
+  /api/v1/marketplace/library:
+    get:
+      tags: [Marketplace]
+      operationId: personalSkillLibrary
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/marketplace/statements:
+    get:
+      tags: [Marketplace]
+      operationId: listCreatorStatements
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+    post:
+      tags: [Marketplace]
+      operationId: createCreatorStatement
+      parameters: [{$ref: '#/components/parameters/CsrfToken'}]
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '409': {$ref: '#/components/responses/Error'}
+  /api/v1/marketplace/statements/{statementId}/payouts:
+    post:
+      tags: [Marketplace]
+      operationId: submitCreatorSandboxPayout
+      parameters:
+        - {name: statementId, in: path, required: true, schema: {type: string}}
+        - {$ref: '#/components/parameters/IdempotencyKey'}
+        - {$ref: '#/components/parameters/CsrfToken'}
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/admin/scan-targets:
+    get:
+      tags: [Automation]
+      operationId: listScanTargets
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+    post:
+      tags: [Automation]
+      operationId: createScanTarget
+      parameters: [{$ref: '#/components/parameters/CsrfToken'}]
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/admin/scan-targets/{targetId}:
+    put:
+      tags: [Automation]
+      operationId: updateScanTarget
+      parameters:
+        - {name: targetId, in: path, required: true, schema: {type: string}}
+        - {$ref: '#/components/parameters/CsrfToken'}
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/admin/scan-targets/{targetId}/run:
+    post:
+      tags: [Automation]
+      operationId: runScanTarget
+      parameters:
+        - {name: targetId, in: path, required: true, schema: {type: string}}
+        - {$ref: '#/components/parameters/CsrfToken'}
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/admin/scan-runs:
+    get:
+      tags: [Automation]
+      operationId: listScanRuns
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+  /api/v1/admin/scan-runs/run-due:
+    post:
+      tags: [Automation]
+      operationId: runDueScanTargets
+      parameters: [{$ref: '#/components/parameters/CsrfToken'}]
+      requestBody: {$ref: '#/components/requestBodies/JsonBody'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: opaque
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: skillsentra_session
+  parameters:
+    ProjectId:
+      name: projectId
+      in: path
+      required: true
+      schema: {type: string}
+    ConnectionId:
+      name: connectionId
+      in: path
+      required: true
+      schema: {type: string}
+    PublicationId:
+      name: publicationId
+      in: path
+      required: true
+      schema: {type: string}
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      schema: {type: string, minLength: 12, maxLength: 200}
+    CsrfToken:
+      name: X-CSRF-Token
+      in: header
+      required: false
+      description: Required for state-changing requests authenticated with the account session cookie.
+      schema: {type: string}
+  requestBodies:
+    JsonBody:
+      required: true
+      content:
+        application/json:
+          schema: {type: object, additionalProperties: true}
+  responses:
+    Success:
+      description: Successful tenant-scoped response.
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Envelope'}
+    Error:
+      description: Request rejected without exposing cross-tenant existence or secrets.
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorEnvelope'}
+  schemas:
+    Envelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data: {}
+        meta: {$ref: '#/components/schemas/ResponseMeta'}
+    ErrorEnvelope:
+      type: object
+      required: [error, meta]
+      properties:
+        error:
+          type: object
+          required: [code, message, details]
+          properties:
+            code: {type: string}
+            message: {type: string}
+            details: {type: object, additionalProperties: true}
+        meta: {$ref: '#/components/schemas/ResponseMeta'}
+    ResponseMeta:
+      type: object
+      required: [request_id]
+      properties:
+        request_id: {type: string}

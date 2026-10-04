@@ -1,0 +1,15 @@
+interface:
+  display_name: "SKillSentra for Chatgpt"
+  short_description: "Search and govern exact Agent Skill versions"
+  brand_color: "#0A84FF"
+  default_prompt: "Use $skillsentra-for-chatgpt to search for an exact Skill ID, inspect the current expert framework, and confirm every write before evaluating or updating it."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "skillsentra-for-chatgpt"
+      description: "Bundled stdio bridge to the configured SkillSentra HTTP service"
+      transport: "stdio"
+
+policy:
+  allow_implicit_invocation: false

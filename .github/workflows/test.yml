@@ -1,0 +1,83 @@
+name: SkillSentra tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  unit:
+    name: Unit · ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Compile backend
+        run: python -m compileall -q app tests
+      - name: Run automated tests
+        run: python -m unittest discover -s tests -v
+      - name: Check documentation
+        run: python scripts/check_docs.py
+      - name: Check frontend JavaScript
+        run: npm run check:js
+
+  browser:
+    name: Browser · Chromium
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Install browser test dependency
+        run: npm ci --ignore-scripts
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run browser and accessibility smoke tests
+        run: npm run test:e2e
+
+  chatgpt-container:
+    name: Container · ChatGPT MCP preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - name: Validate Compose configuration
+        run: |
+          cp .env.production.example .env.production
+          docker compose --env-file .env.chatgpt-mcp.example -f compose.yaml -f compose.chatgpt.yaml config --quiet
+      - name: Build ChatGPT MCP preview image
+        run: docker build -f Dockerfile.chatgpt-mcp -t skillsentra-for-chatgpt-mcp:test .
+      - name: Start image and probe health
+        run: |
+          set -euo pipefail
+          container_id="$(docker run --detach --rm \
+            --publish 127.0.0.1:8787:8787 \
+            --env SKILLSENTRA_CHATGPT_MCP_AUTH_TOKEN=ci-gateway-token-000000000001 \
+            --env SKILLSENTRA_API_TOKEN=ci-service-token-000000000002 \
+            skillsentra-for-chatgpt-mcp:test)"
+          trap 'docker rm --force "$container_id" >/dev/null 2>&1 || true' EXIT
+          for attempt in $(seq 1 20); do
+            if curl --fail --silent --show-error http://127.0.0.1:8787/healthz | grep --fixed-strings '"status":"ok"' >/dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          docker logs "$container_id"
+          exit 1

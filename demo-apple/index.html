@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="SkillSentra Studio 双路径 Skill 创建工作台交互原型">
+  <meta name="color-scheme" content="light dark">
+  <title>SkillSentra Studio · 双路径创建工作台</title>
+  <link rel="icon" href="skillsentra-icon.png?v=0.6.4" type="image/png" sizes="512x512">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到当前步骤</a>
+
+  <div class="app-window" id="app-window">
+    <header class="titlebar" aria-label="应用工具栏">
+      <button class="icon-button sidebar-toggle" id="sidebar-toggle" aria-label="显示或隐藏步骤列表" aria-expanded="true">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v13H4zM9 5.5v13"/></svg>
+      </button>
+      <div class="titlebar-project">
+        <img class="app-glyph" src="skillsentra-logo-transparent.png" alt="" aria-hidden="true">
+        <div><strong>Studio</strong><small id="save-status">所有更改已存入本地演示</small></div>
+      </div>
+      <div class="titlebar-actions">
+        <div class="language-switch" role="group" aria-label="界面语言">
+          <button type="button" data-language="zh-CN" class="is-selected" aria-pressed="true" aria-label="切换到中文">中</button>
+          <button type="button" data-language="en" aria-pressed="false" aria-label="Switch to English">EN</button>
+        </div>
+        <details class="toolbar-menu product-switcher">
+          <summary class="icon-button" aria-label="切换 SkillSentra 产品">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg>
+          </summary>
+          <div class="toolbar-menu-panel product-menu">
+            <a class="toolbar-button" href="marketplace.html" aria-label="打开 Skill 市场">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16v11H4zM6 4h12l2 5H4l2-5ZM8 13h3M14 13h2"/></svg>
+              <span><strong>市场</strong><small>发现与排行</small></span>
+            </a>
+            <a class="toolbar-button" href="platform.html" aria-label="打开证据控制台">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h7V4H4v9ZM4 20h7v-4H4v4Zm10 0h6v-9h-6v9Zm0-16v4h6V4h-6Z"/></svg>
+              <span><strong>控制台</strong><small>证据与结算</small></span>
+            </a>
+          </div>
+        </details>
+        <button class="ai-center-button" id="ai-center-button" aria-label="打开 AI 控制中心">
+          <span class="ai-button-mark" aria-hidden="true">✦</span>
+          <span class="ai-button-copy"><strong>AI 协作</strong><small id="ai-status-label">未连接</small></span>
+          <i class="ai-connection-dot" id="ai-connection-dot" aria-hidden="true"></i>
+        </button>
+        <details class="toolbar-menu more-actions-menu">
+          <summary class="icon-button" aria-label="更多操作">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
+          </summary>
+          <div class="toolbar-menu-panel more-menu-panel">
+            <a class="toolbar-button mobile-only" href="marketplace.html" aria-label="打开 Skill 市场">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16v11H4zM6 4h12l2 5H4l2-5ZM8 13h3M14 13h2"/></svg>
+              市场
+            </a>
+            <a class="toolbar-button mobile-only" href="platform.html" aria-label="打开证据控制台">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h7V4H4v9ZM4 20h7v-4H4v4Zm10 0h6v-9h-6v9Zm0-16v4h6V4h-6Z"/></svg>
+              控制台
+            </a>
+            <button class="toolbar-button" id="project-center-button" aria-label="打开项目与审计中心">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6.5h16v12H4zM8 3.5h8v3H8M8 11h8M8 15h5"/></svg>
+              项目中心
+            </button>
+            <button class="toolbar-button" id="load-demo">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.2 4.1L17 9l-3.8 1.9L12 15l-1.2-4.1L7 9l3.8-1.9L12 3Z"/></svg>
+              载入演示场景
+            </button>
+            <button class="toolbar-button" id="help-button" aria-label="查看原型说明">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.8 9a2.3 2.3 0 1 1 3.3 2.1c-.9.4-1.1 1-1.1 1.9M12 17h.01"/></svg>
+              原型说明
+            </button>
+          </div>
+        </details>
+      </div>
+    </header>
+
+    <section class="modebar" aria-label="创建方式">
+      <div class="mode-segment" role="group" aria-label="切换创建路径">
+        <button data-mode="template" class="is-selected" aria-pressed="true">基于模板</button>
+        <button data-mode="existing" aria-pressed="false">基于现有 Skill</button>
+      </div>
+      <div class="mode-meta">
+        <span class="status-pill draft"><i></i>草稿</span>
+        <span id="mode-step-summary">9 步创建流程</span>
+      </div>
+    </section>
+
+    <div class="workspace-grid">
+      <aside class="step-sidebar" id="step-sidebar" aria-label="创建步骤">
+        <div class="sidebar-head">
+          <span class="eyebrow">创建路线</span>
+          <h1 id="project-name">新 Skill</h1>
+          <p id="mode-description">从目标开始，逐步生成可验证的标准 Skill。</p>
+        </div>
+        <nav class="step-list" id="step-list" aria-label="流程步骤"></nav>
+        <div class="sidebar-foot">
+          <div class="progress-copy"><span>整体进度</span><strong id="progress-label">0%</strong></div>
+          <progress class="progress-track" id="progress-fill" max="100" value="0" aria-label="整体完成进度"></progress>
+          <button class="text-button" id="reset-project">重新开始</button>
+        </div>
+      </aside>
+
+      <button class="sidebar-scrim" id="sidebar-scrim" type="button" aria-label="关闭步骤列表" hidden></button>
+
+      <main class="main-content" id="main-content" tabindex="-1">
+        <div id="welcome-view" class="welcome-view">
+          <div class="welcome-copy">
+            <span class="eyebrow">SKILLSENTRA STUDIO</span>
+            <h2>把一个想法，变成<br><em>可验证的 Skill。</em></h2>
+            <p>选择一条路线。系统会把目标、方法、流程、评价、试运行与交付组织成完整证据链，并在关键动作前向你说明影响。</p>
+          </div>
+          <div class="path-grid">
+            <button class="path-card primary" data-start-mode="template">
+              <span class="path-icon blue" aria-hidden="true">
+                <svg viewBox="0 0 32 32"><path d="M7 5h18v22H7zM11 11h10M11 16h10M11 21h6"/></svg>
+              </span>
+              <span class="path-body"><strong>基于模板创建</strong><small>从目标到动态更新的 9 步向导</small></span>
+              <span class="path-arrow" aria-hidden="true">›</span>
+            </button>
+            <button class="path-card" data-start-mode="existing">
+              <span class="path-icon purple" aria-hidden="true">
+                <svg viewBox="0 0 32 32"><path d="M6 10h12v16H6zM14 6h12v16h-8M11 15h5M11 20h5"/></svg>
+              </span>
+              <span class="path-body"><strong>基于现有 Skill</strong><small>冻结、评价、改进、回归与升级的 7 步流程</small></span>
+              <span class="path-arrow" aria-hidden="true">›</span>
+            </button>
+          </div>
+          <div class="welcome-note">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.6 2.8 8 7 10 4.2-2 7-5.4 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+            <div><strong>本地优先，操作透明</strong><small>SQLite 保存项目、版本、验证与审计记录；模型密钥只从服务端读取。导入只做静态读取，候选包生成在隔离目录，不执行第三方脚本。</small></div>
+          </div>
+        </div>
+
+        <section id="step-view" class="step-view" hidden>
+          <header class="step-header">
+            <div>
+              <span class="eyebrow" id="step-kicker">步骤 1 / 9</span>
+              <h2 id="step-title">明确目标</h2>
+              <p id="step-intro">说明为谁创建、解决什么问题、何时使用以及怎样算成功。</p>
+            </div>
+            <button class="quiet-button" id="step-guide">查看本步说明</button>
+          </header>
+          <section class="ai-collab-card" id="ai-collab-card" aria-label="本步 AI 协作"></section>
+          <div class="step-content" id="step-content"></div>
+          <div class="gate-message" id="gate-message" role="alert" hidden></div>
+          <footer class="step-actions">
+            <button class="secondary-button" id="previous-step">上一步</button>
+            <div class="action-right">
+              <button class="secondary-button" id="save-draft">保存草稿</button>
+              <button class="primary-button" id="next-step">继续</button>
+            </div>
+          </footer>
+        </section>
+      </main>
+
+      <aside class="inspector" id="inspector" aria-label="实时 Skill 蓝图">
+        <div class="inspector-title">
+          <div><span class="eyebrow">实时蓝图</span><h2>Skill Blueprint</h2></div>
+          <span class="live-badge"><i></i>实时</span>
+        </div>
+        <div id="inspector-content"></div>
+      </aside>
+    </div>
+
+    <nav class="mobile-actions" id="mobile-actions" aria-label="移动端步骤操作" hidden>
+      <button id="mobile-previous" aria-label="上一步">‹</button>
+      <span id="mobile-step-label">步骤 1 / 9</span>
+      <button id="mobile-next">继续</button>
+    </nav>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <div class="sheet-backdrop" id="sheet-backdrop" hidden>
+    <section class="sheet" id="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <button class="sheet-close icon-button" id="sheet-close" aria-label="关闭">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg>
+      </button>
+      <div id="sheet-content"></div>
+    </section>
+  </div>
+
+  <script src="i18n.js"></script>
+  <script src="ai-truth.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

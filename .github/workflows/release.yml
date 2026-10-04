@@ -1,0 +1,168 @@
+name: SKillSentra for Chatgpt release
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: skillsentra-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      version: ${{ steps.package.outputs.version }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Install browser test dependency
+        run: npm ci --ignore-scripts
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run backend tests
+        run: python -m unittest discover -s tests -v
+      - name: Check documentation
+        run: python scripts/check_docs.py
+      - name: Check frontend JavaScript
+        run: npm run check:js
+      - name: Run browser tests
+        run: npm run test:e2e
+      - name: Read package version
+        id: package
+        shell: bash
+        run: node -e "console.log('version=' + require('./package.json').version)" >> "$GITHUB_OUTPUT"
+      - name: Measure local policy baseline
+        run: python scripts/benchmark_control_plane.py --iterations 300 --output evidence/performance/control-plane-benchmark-v${{ steps.package.outputs.version }}.json
+      - name: Rehearse synthetic backup restore
+        run: python scripts/rehearse_restore.py --output evidence/recovery/sqlite-restore-rehearsal-v${{ steps.package.outputs.version }}.json
+      - name: Build deterministic release evidence
+        run: python scripts/build_release.py
+      - name: Verify release inventory, metadata and source identity
+        run: python scripts/verify_release.py release --source-root .
+      - uses: actions/upload-artifact@v6
+        with:
+          name: skillsentra-for-chatgpt-${{ steps.package.outputs.version }}-release
+          path: |
+            release/
+            evidence/performance/control-plane-benchmark-v${{ steps.package.outputs.version }}.json
+            evidence/recovery/sqlite-restore-rehearsal-v${{ steps.package.outputs.version }}.json
+          if-no-files-found: error
+
+  publish-release:
+    name: Publish stable source release
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs: package
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/download-artifact@v6
+        with:
+          name: skillsentra-for-chatgpt-${{ needs.package.outputs.version }}-release
+          path: .
+      - name: Verify downloaded release and trusted source identity
+        env:
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          EVENT_SHA: ${{ github.sha }}
+          EXPECTED_VERSION: ${{ needs.package.outputs.version }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected_tag="v${EXPECTED_VERSION}"
+          if [[ "$RELEASE_TAG" != "$expected_tag" ]]; then
+            echo "Release tag does not match package version." >&2
+            exit 1
+          fi
+
+          default_ref="refs/remotes/origin/${DEFAULT_BRANCH}"
+          if ! git show-ref --verify --quiet "$default_ref"; then
+            echo "Default branch ref is unavailable in the release checkout." >&2
+            exit 1
+          fi
+          tag_commit="$(git rev-parse "${RELEASE_TAG}^{commit}")"
+          event_commit="$(git rev-parse "${EVENT_SHA}^{commit}")"
+          if [[ "$tag_commit" != "$event_commit" ]]; then
+            echo "Tag commit does not match the triggering event SHA." >&2
+            exit 1
+          fi
+          if ! git merge-base --is-ancestor "$tag_commit" "$default_ref"; then
+            echo "Tag commit is not an ancestor of the repository default branch." >&2
+            exit 1
+          fi
+
+          python scripts/verify_release.py release --source-root .
+          python - "$EXPECTED_VERSION" "$tag_commit" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          expected_version, expected_commit = sys.argv[1:]
+          manifest = json.loads(Path("release/build-manifest.json").read_text(encoding="utf-8"))
+          expected_artifact = f"skillsentra-for-chatgpt-{expected_version}.zip"
+          checks = {
+              "version": manifest.get("version") == expected_version,
+              "commit": manifest.get("commit") == expected_commit,
+              "source_dirty": manifest.get("source_dirty") is False,
+              "source_changes": manifest.get("source_changes") == [],
+              "artifact_path": (manifest.get("artifact") or {}).get("path") == expected_artifact,
+          }
+          failed = [name for name, passed in checks.items() if not passed]
+          if failed:
+              raise SystemExit("Release manifest identity check failed: " + ", ".join(failed))
+          PY
+      - name: Prepare explicitly unsigned build metadata
+        env:
+          EXPECTED_VERSION: ${{ needs.package.outputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          metadata_asset="release/skillsentra-for-chatgpt-${EXPECTED_VERSION}-unsigned-build-metadata.intoto.jsonl"
+          cp release/provenance.intoto.jsonl "$metadata_asset"
+          notes="$RUNNER_TEMP/skillsentra-${EXPECTED_VERSION}-release-notes.md"
+          {
+            echo "Public source release trust boundary: the attached in-toto JSON is unsigned build metadata, not a GitHub or Sigstore attestation."
+            echo
+            cat "product/05-release/release-notes-v${EXPECTED_VERSION}.md"
+          } > "$notes"
+      - name: Publish stable GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_VERSION: ${{ needs.package.outputs.version }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          title="SKillSentra for Chatgpt ${RELEASE_TAG}"
+          notes="$RUNNER_TEMP/skillsentra-${EXPECTED_VERSION}-release-notes.md"
+          assets=(
+            "release/skillsentra-for-chatgpt-${EXPECTED_VERSION}.zip"
+            "release/build-manifest.json"
+            "release/sbom.cdx.json"
+            "release/skillsentra-for-chatgpt-${EXPECTED_VERSION}-unsigned-build-metadata.intoto.jsonl"
+          )
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            echo "Release already exists; immutable release assets will not be replaced." >&2
+            exit 1
+          fi
+          gh release create "$RELEASE_TAG" "${assets[@]}" --title "$title" --notes-file "$notes"

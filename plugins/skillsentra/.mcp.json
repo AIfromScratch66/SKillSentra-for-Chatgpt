@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "skillsentra-for-chatgpt": {
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "./scripts/start_mcp.ps1"
+      ],
+      "cwd": ".",
+      "env_vars": [
+        "SKILLSENTRA_API_TOKEN",
+        "SKILLSENTRA_PYTHON",
+        "SKILLSENTRA_TIMEOUT_SECONDS"
+      ],
+      "env": {
+        "SKILLSENTRA_BASE_URL": "http://127.0.0.1:8866"
+      },
+      "startup_timeout_sec": 10,
+      "tool_timeout_sec": 150
+    }
+  }
+}

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 280" role="img" aria-labelledby="title desc">
+  <title id="title">SkillSentra concept 2 — Taiji Flow</title>
+  <desc id="desc">The original three-arc structure uses staggered outer and inner curves to express continuous renewal</desc>
+  <defs>
+    <linearGradient id="blue" x1="38" y1="34" x2="216" y2="238" gradientUnits="userSpaceOnUse"><stop stop-color="#64D2FF"/><stop offset=".42" stop-color="#0A84FF"/><stop offset="1" stop-color="#0066CC"/></linearGradient>
+    <linearGradient id="ink" x1="42" y1="94" x2="184" y2="224" gradientUnits="userSpaceOnUse"><stop stop-color="#636366"/><stop offset=".45" stop-color="#2C2C2E"/><stop offset="1" stop-color="#080809"/></linearGradient>
+    <radialGradient id="node" cx="32%" cy="27%" r="76%"><stop stop-color="#76767D"/><stop offset=".5" stop-color="#252528"/><stop offset="1" stop-color="#050506"/></radialGradient>
+    <linearGradient id="type" x1="300" y1="92" x2="300" y2="184" gradientUnits="userSpaceOnUse"><stop stop-color="#9DA6B4"/><stop offset=".18" stop-color="#4C5563"/><stop offset=".48" stop-color="#161B23"/><stop offset=".75" stop-color="#3A424E"/><stop offset="1" stop-color="#090B0F"/></linearGradient>
+    <filter id="markShadow" x="-20%" y="-20%" width="145%" height="155%"><feDropShadow dx="0" dy="5" stdDeviation="5" flood-opacity=".2"/></filter>
+    <filter id="typeShadow" x="-5%" y="-18%" width="112%" height="145%"><feDropShadow dx="3" dy="4" stdDeviation="1.6" flood-color="#02050A" flood-opacity=".42"/><feDropShadow dx="0" dy="-1" stdDeviation=".6" flood-color="#FFFFFF" flood-opacity=".16"/></filter>
+  </defs>
+  <g transform="translate(22 1)" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="26" filter="url(#markShadow)">
+    <path d="M53 111C42 68 76 34 127 34c29 0 55 12 73 32" stroke="url(#blue)"/>
+    <path d="M112 101C158 87 204 111 216 151c10 33 0 66-26 83" stroke="url(#blue)"/>
+    <path d="M41 171c22 42 72 56 114 36 10-5 18-12 24-20" stroke="url(#ink)"/>
+    <circle cx="126" cy="139" r="20" fill="url(#node)" stroke="none"/>
+    <ellipse cx="119" cy="132" rx="5.2" ry="3.6" fill="#FFFFFF" fill-opacity=".19" stroke="none"/>
+  </g>
+  <text x="300" y="177" fill="url(#type)" filter="url(#typeShadow)" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="96" font-weight="600" letter-spacing="-3">SkillSentra</text>
+</svg>

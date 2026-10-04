@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title description">
+  <title id="title">SkillSentra</title>
+  <desc id="description">Three connected arcs around an evidence hub with the SkillSentra name</desc>
+  <defs>
+    <linearGradient id="blue" x1="34" y1="28" x2="218" y2="224" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8BE3FF"/>
+      <stop offset="0.45" stop-color="#0A84FF"/>
+      <stop offset="1" stop-color="#0057BC"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="56" fill="#F5FAFF"/>
+  <g fill="none" stroke="url(#blue)" stroke-width="18" stroke-linecap="round">
+    <path d="M128 45c46 0 83 37 83 83"/>
+    <path d="M202 169c-23 40-74 53-114 30"/>
+    <path d="M54 169C31 129 44 78 84 55"/>
+  </g>
+  <g fill="#0A84FF">
+    <circle cx="128" cy="45" r="13"/>
+    <circle cx="202" cy="169" r="13"/>
+    <circle cx="54" cy="169" r="13"/>
+  </g>
+  <circle cx="128" cy="128" r="38" fill="#111216"/>
+  <text x="128" y="137" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="27" font-weight="700" fill="#FFFFFF">SS</text>
+  <text x="128" y="233" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="650" fill="#111216">SkillSentra</text>
+</svg>

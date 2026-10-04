@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="SkillSentra evidence, Agent, security and settlement control plane">
+  <meta name="color-scheme" content="light dark">
+  <title>SkillSentra · Control Plane</title>
+  <link rel="icon" href="skillsentra-icon.png?v=0.6.4" type="image/png" sizes="512x512">
+  <link rel="stylesheet" href="platform.css">
+</head>
+<body>
+  <a class="skip-link" href="#platform-main">跳到主要内容</a>
+
+  <div class="platform-shell">
+    <aside class="platform-sidebar" aria-label="主导航">
+      <a class="brand" href="platform.html" aria-label="SkillSentra 控制台首页">
+        <span class="brand-mark" aria-hidden="true"><img src="skillsentra-logo-transparent.png" alt=""></span>
+      </a>
+
+      <nav class="platform-nav" aria-label="控制台功能">
+        <span class="nav-label" data-i18n="workspace">工作区</span>
+        <button type="button" class="nav-item is-active" data-section="overview">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h7V4H4v9Zm0 7h7v-4H4v4Zm10 0h6v-9h-6v9Zm0-16v4h6V4h-6Z"/></svg>
+          <span data-i18n="overview">总览</span>
+        </button>
+        <button type="button" class="nav-item" data-section="repositories">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6.5h6l2 2h8v10H4v-12Z"/><path d="M8 13h8M8 16h5"/></svg>
+          <span data-i18n="repositories">仓库与制品</span>
+        </button>
+        <button type="button" class="nav-item" data-section="automation">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h11M4 12h16M4 17h8"/><path d="m16 5 4 2-4 2M14 15l-4 2 4 2"/></svg>
+          <span data-i18n="automation">自动扫描</span>
+        </button>
+        <button type="button" class="nav-item" data-section="agents">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="13" rx="3"/><path d="M9 21h6M12 18v3M8 10h.01M16 10h.01M9 14h6"/></svg>
+          <span data-i18n="agents">Agent 管理</span>
+        </button>
+        <button type="button" class="nav-item" data-section="security">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 7 3v5c0 4.6-2.7 8-7 10-4.3-2-7-5.4-7-10V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+          <span data-i18n="security">安全与撤销</span>
+        </button>
+
+        <span class="nav-label" data-i18n="operations">运营</span>
+        <button type="button" class="nav-item" data-section="settlement">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h4"/></svg>
+          <span data-i18n="settlement">结算与对账</span>
+        </button>
+        <button type="button" class="nav-item" data-section="audit">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18H6zM9 8h6M9 12h6M9 16h4"/></svg>
+          <span data-i18n="audit">审计</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-foot">
+        <div class="trust-state"><i></i><span><strong data-i18n="privateBeta">Private Beta</strong><small data-i18n="payoutOff">生产付款已关闭</small></span></div>
+        <a href="studio.html" class="studio-link"><span data-i18n="openStudio">打开 Skill Studio</span><b aria-hidden="true">↗</b></a>
+      </div>
+    </aside>
+
+    <button class="nav-scrim" id="nav-scrim" type="button" aria-label="关闭导航" hidden></button>
+
+    <div class="platform-stage">
+      <header class="platform-topbar">
+        <button class="icon-button mobile-menu" id="mobile-menu" type="button" aria-label="打开导航" aria-expanded="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+        <div class="context-copy">
+          <span class="context-kicker" data-i18n="organization">组织</span>
+          <strong id="tenant-name">SkillSentra Workspace</strong>
+          <strong class="tenant-short" data-i18n="workspaceShort">工作区</strong>
+        </div>
+        <div class="topbar-actions">
+          <span class="system-state"><i></i><span data-i18n="allSystems">控制面正常</span></span>
+          <div class="language-switch" role="group" aria-label="界面语言">
+            <button type="button" data-language="zh-CN" class="is-selected" aria-pressed="true">中</button>
+            <button type="button" data-language="en" aria-pressed="false">EN</button>
+          </div>
+          <button class="avatar-button" type="button" id="identity-button" aria-label="当前身份"><span>FA</span></button>
+        </div>
+      </header>
+
+      <main id="platform-main" class="platform-main" tabindex="-1">
+        <div class="loading-state" id="loading-state">
+          <span class="loading-orbit" aria-hidden="true"><i></i><i></i><i></i></span>
+          <strong data-i18n="loading">正在验证事实链…</strong>
+        </div>
+        <div id="platform-content" hidden></div>
+      </main>
+    </div>
+  </div>
+
+  <div class="auth-gate" id="auth-gate" hidden>
+    <form class="auth-card" id="auth-form">
+      <span class="brand-mark large" aria-hidden="true"><img src="skillsentra-icon.png" alt=""></span>
+      <span class="eyebrow">SKILLSENTRA ACCESS</span>
+      <h1 data-i18n="signIn">连接到控制面</h1>
+      <p data-i18n="signInHint">访问令牌只保存在当前浏览器会话中，并通过 Authorization 请求头发送。</p>
+      <label for="access-token" data-i18n="accessToken">访问令牌</label>
+      <input id="access-token" type="password" autocomplete="off" required minlength="24" placeholder="ss_live_••••••••">
+      <p class="form-error" id="auth-error" role="alert"></p>
+      <button class="primary-button" type="submit" data-i18n="connect">安全连接</button>
+    </form>
+  </div>
+
+  <div class="modal-backdrop" id="modal-backdrop" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button type="button" class="icon-button modal-close" id="modal-close" aria-label="关闭">×</button>
+      <div id="modal-content"></div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="platform.js"></script>
+</body>
+</html>

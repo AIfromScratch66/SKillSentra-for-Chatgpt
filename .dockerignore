@@ -1,0 +1,11 @@
+.git
+.github
+.env*
+!.env.production.example
+__pycache__
+*.py[cod]
+data
+node_modules
+test-results
+playwright-report
+assets/brand/concepts

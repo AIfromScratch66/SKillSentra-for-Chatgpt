@@ -1,0 +1,45 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "skillsentra-for-chatgpt",
+  "version": "0.8.0",
+  "description": "Evidence-bound Agent Skill lifecycle workspace for ChatGPT.",
+  "author": {
+    "name": "AIfromScratch66",
+    "url": "https://github.com/AIfromScratch66"
+  },
+  "homepage": "https://github.com/AIfromScratch66/SKillSentra-for-Chatgpt",
+  "repository": "https://github.com/AIfromScratch66/SKillSentra-for-Chatgpt",
+  "keywords": [
+    "agent-skills",
+    "skill-lifecycle",
+    "evidence",
+    "governance",
+    "chatgpt"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "SKillSentra for Chatgpt",
+        "shortDescription": "Govern Skills with evidence",
+        "longDescription": "SKillSentra for Chatgpt helps builders discover, inspect, evaluate, and improve exact versions of Agent Skills. It reads versioned project context and evidence through a controlled MCP connection. State-changing tools, including project creation, AI-step invocation, validation, review recording, update checks, and proposal write-back, require explicit confirmation and create auditable records. It does not automatically install or run downloaded Skills, apply updates, accept proposals, publish versions, deploy software, process payments, or authorize releases. This independent integration is not made or endorsed by OpenAI.",
+        "developerName": "AIfromScratch66",
+        "category": "Developer Tools",
+        "capabilities": [
+          "Discover Skills",
+          "Read versioned project evidence",
+          "Create Skill projects",
+          "Run confirmed AI and validation actions",
+          "Submit context-bound proposals"
+        ],
+        "defaultPrompt": [
+          "Search for a Skill for drafting a technical report and show its evidence level.",
+          "Show the current version, evidence and open risks for my Skill project.",
+          "Review a pending collaboration request I select and draft a bounded proposal."
+        ],
+        "brandColor": "#0A84FF",
+        "composerIcon": "./assets/skillsentra-icon.svg",
+        "logo": "./assets/skillsentra-icon.svg"
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 # SKillSentra for Chatgpt
 
-[![M8ven Score](https://m8ven.ai/badge/mcp/aifromscratch66/skillsentra-for-chatgpt)](https://m8ven.ai/mcp/aifromscratch66/skillsentra-for-chatgpt?s=readme)
+[![M8ven Score](https://m8ven.ai/badge/mcp/aifromscratch66-skillsentra-for-chatgpt-1qs71n?v=a7dfc371dfb02b0f78b9eb8d42854df5)](https://m8ven.ai/mcp/aifromscratch66-skillsentra-for-chatgpt-1qs71n?s=readme)
 
 > Govern exact Agent Skill versions with evidence from ChatGPT.
 

@@ -20,7 +20,7 @@ class ChatGPTPackageTests(unittest.TestCase):
         )
 
         self.assertEqual(package["name"], "skillsentra-for-chatgpt")
-        self.assertEqual(package["version"], "0.8.0")
+        self.assertEqual(package["version"], "0.8.1")
         self.assertEqual(app.__version__, package["version"])
         self.assertEqual(portable["name"], package["name"])
         self.assertEqual(portable["version"], package["version"])
@@ -78,7 +78,7 @@ class ChatGPTPackageTests(unittest.TestCase):
     def test_chatgpt_runtime_files_are_in_release_inventory(self) -> None:
         from scripts.build_release import release_files
 
-        paths = {path.relative_to(ROOT).as_posix() for path in release_files("0.8.0")}
+        paths = {path.relative_to(ROOT).as_posix() for path in release_files("0.8.1")}
         for required in (
             "CHATGPT.md",
             "Dockerfile.chatgpt-mcp",
@@ -88,8 +88,8 @@ class ChatGPTPackageTests(unittest.TestCase):
             "package-lock.json",
             "plugins/skillsentra/plugin.json",
             "plugins/skillsentra/scripts/chatgpt_mcp_server.py",
-            "product/04-quality/test-plan-v0.8.0.md",
-            "evidence/validation-report-v0.8.0.md",
+            "product/04-quality/test-plan-v0.8.1.md",
+            "evidence/validation-report-v0.8.1.md",
             "THIRD_PARTY_NOTICES.md",
             "scripts/build_chatgpt_plugin.py",
         ):

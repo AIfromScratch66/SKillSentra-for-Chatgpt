@@ -30,9 +30,9 @@ def load_server_version() -> str:
     try:
         payload = json.loads(manifest_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
-        return "0.8.0"
+        return "0.8.1"
     version = payload.get("version")
-    return version if isinstance(version, str) and version.strip() else "0.8.0"
+    return version if isinstance(version, str) and version.strip() else "0.8.1"
 
 
 SERVER_NAME = load_server_name()

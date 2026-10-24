@@ -6,11 +6,13 @@
 
 ## 当前状态
 
-当前公开源码版本为 **v0.8.0**，基于 SkillSentra Personal v0.6.5。该版本增加面向 Streamable HTTP 客户端的无状态 JSON 响应式 MCP-over-HTTP 适配，同时保留精确版本证据、写操作明确确认和人工发布门禁。
+当前公开源码版本为 **v0.8.1**，基于 SkillSentra Personal v0.6.5。该版本包含面向 Streamable HTTP 客户端的无状态 JSON 响应式 MCP-over-HTTP 适配，同时保留精确版本证据、写操作明确确认和人工发布门禁。
+
+[下载 v0.8.1 修复包](https://github.com/AIfromScratch66/SKillSentra-for-Chatgpt/releases/download/v0.8.1/skillsentra-for-chatgpt-0.8.1.zip) · [发布页与更新说明](https://github.com/AIfromScratch66/SKillSentra-for-Chatgpt/releases/tag/v0.8.1)
 
 专用名称为 **SKillSentra for Chatgpt（ChatGPT 专用协作版）**，短说明为 **在 ChatGPT 中治理 Skills**。这是 SkillSentra 的独立适配，并非由 OpenAI 制作或背书。
 
-本仓库及 v0.8.0 GitHub Release 是公开源码发行版；它不等于公网 MCP 已部署、真实 ChatGPT 已联通、生产批准或 ChatGPT Directory 审核通过。便携 ZIP 仍是需要由操作方配置并验证的候选骨架。详见 [ChatGPT 配置与安全边界](CHATGPT.md)、[v0.8.0 版本说明](product/05-release/release-notes-v0.8.0.md)和[本轮验证报告](evidence/validation-report-v0.8.0.md)。
+本仓库及 v0.8.1 GitHub Release 是公开源码发行版；它不等于公网 MCP 已部署、真实 ChatGPT 已联通、生产批准或 ChatGPT Directory 审核通过。便携 ZIP 仍是需要由操作方配置并验证的候选骨架。详见 [ChatGPT 配置与安全边界](CHATGPT.md)、[v0.8.1 版本说明](product/05-release/release-notes-v0.8.1.md)和[本轮验证报告](evidence/validation-report-v0.8.1.md)。
 
 ## 源码维护：YAML 多行说明（2026-10-24）
 
@@ -18,7 +20,7 @@
 
 后端新增固定依赖 **PyYAML 6.0.3**。请把 `requirements.txt` 安装到启动、测试脚本实际使用的同一个 Python 中；需要时通过 `SKILLSENTRA_PYTHON` 指定该解释器。后端容器和 CI 已包含依赖安装步骤，独立 MCP 网关仍无额外依赖。
 
-详见[维护说明](product/05-release/yaml-description-maintenance.md)、[测试计划](product/04-quality/test-plan-yaml-description.md)和[验证报告](evidence/validation-yaml-description-20261024.md)。本次为源码维护，不替换已有 v0.8.0 发布标签，也不部署服务。
+详见[维护说明](product/05-release/yaml-description-maintenance.md)、[测试计划](product/04-quality/test-plan-yaml-description.md)和[验证报告](evidence/validation-yaml-description-20261024.md)。修复已纳入 v0.8.1 源码下载包；保留已有 v0.8.0 历史发布，不部署服务。
 
 ## v0.8.0 新增能力
 
@@ -46,7 +48,7 @@ python plugins/skillsentra/scripts/chatgpt_mcp_server.py
 
 ## 兼容性与证据边界
 
-单元测试、协议测试和本地浏览器测试通过，只能证明被测提交下的本地行为；不能单独证明官方 MCP Inspector 互操作、ChatGPT 已成功连接、公共目录已获批、已生产部署或已产生真实用户价值。v0.8.0 尚未记录官方 MCP Inspector 或真实 ChatGPT 通过。真实 ChatGPT 证据需要在 Developer Mode 中，针对精确部署提交完成工具发现和有代表性的读写旅程；该证据仍不授权安装、应用更新、生产部署或目录发布。
+单元测试、协议测试和本地浏览器测试通过，只能证明被测提交下的本地行为；不能单独证明官方 MCP Inspector 互操作、ChatGPT 已成功连接、公共目录已获批、已生产部署或已产生真实用户价值。v0.8.1 尚未记录官方 MCP Inspector 或真实 ChatGPT 通过。真实 ChatGPT 证据需要在 Developer Mode 中，针对精确部署提交完成工具发现和有代表性的读写旅程；该证据仍不授权安装、应用更新、生产部署或目录发布。
 
 ChatGPT 写入继续受既有工具 schema 约束。状态变更工具要求明确确认，建议回写仍绑定精确 request ID 和 context hash。提交成功不等于采纳、阶段完成或发布批准。
 
@@ -126,7 +128,7 @@ v0.6.3 会在安装前运行确定性测试与浏览器旅程；本地通过仍�
 
 ## 评分与发布边界
 
-v0.8.0 已获授权作为公开 GitHub 源码发行版发布，但并未关闭生产硬门。公网生产/GA、真实资金划转、Skill 自动安装或自动应用更新、公网 MCP 云部署和 ChatGPT Directory 提交仍未获授权。
+v0.8.1 已获授权作为公开 GitHub 源码发行版发布，但并未关闭生产硬门。公网生产/GA、真实资金划转、Skill 自动安装或自动应用更新、公网 MCP 云部署和 ChatGPT Directory 提交仍未获授权。
 
 仍待完成：真实 ChatGPT 云端联通、真实用户任务成效、与精确对象绑定的可验签审批回执、生产可观测性，以及包含 TLS、托管密钥、加密备份与恢复、独立人工发布授权的生产环境。内部评分和本地测试不能覆盖这些硬门。
 
@@ -134,8 +136,8 @@ v0.8.0 已获授权作为公开 GitHub 源码发行版发布，但并未关闭�
 
 - [开发指南](DEVELOPMENT.md)
 - [ChatGPT 适配指南](CHATGPT.md)
-- [v0.8.0 版本说明](product/05-release/release-notes-v0.8.0.md)
-- [v0.8.0 验证报告](evidence/validation-report-v0.8.0.md)
+- [v0.8.1 版本说明](product/05-release/release-notes-v0.8.1.md)
+- [v0.8.1 验证报告](evidence/validation-report-v0.8.1.md)
 - [安全策略](SECURITY.md)
 - [第三方组件说明](THIRD_PARTY_NOTICES.md)
 

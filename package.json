@@ -1,6 +1,6 @@
 {
   "name": "skillsentra-for-chatgpt",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "private": true,
   "description": "Evidence-bound Agent Skill lifecycle workspace adapted for ChatGPT",
   "scripts": {

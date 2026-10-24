@@ -59,7 +59,7 @@ class ObservabilityAPITests(unittest.TestCase):
         health_status, health = self.request("/api/health")
 
         self.assertEqual(live_status, 200)
-        self.assertEqual(live["data"], {"status": "ok", "service": "skillsentra", "version": "0.8.0"})
+        self.assertEqual(live["data"], {"status": "ok", "service": "skillsentra", "version": "0.8.1"})
         self.assertEqual(ready_status, 200)
         self.assertEqual(health_status, 200)
         self.assertEqual(ready["data"], health["data"])

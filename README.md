@@ -8,11 +8,13 @@
 
 ## Status
 
-The current public source release is **v0.8.0**, based on SkillSentra Personal v0.6.5. It adds a stateless JSON-response MCP-over-HTTP adapter at `POST /mcp`, intended for Streamable HTTP clients, while preserving SkillSentra's exact-version evidence, explicit-write confirmation and human release gates.
+The current public source release is **v0.8.1**, based on SkillSentra Personal v0.6.5. It includes a stateless JSON-response MCP-over-HTTP adapter at `POST /mcp`, intended for Streamable HTTP clients, while preserving SkillSentra's exact-version evidence, explicit-write confirmation and human release gates.
+
+[Download the v0.8.1 source package](https://github.com/AIfromScratch66/SKillSentra-for-Chatgpt/releases/download/v0.8.1/skillsentra-for-chatgpt-0.8.1.zip) · [Release and update instructions](https://github.com/AIfromScratch66/SKillSentra-for-Chatgpt/releases/tag/v0.8.1)
 
 The dedicated product name is **SKillSentra for Chatgpt** and the short description is **Govern Skills with evidence**. It is an independent SkillSentra integration and is not made or endorsed by OpenAI.
 
-This repository and its v0.8.0 GitHub Release are a public source distribution. They are not a public MCP deployment, a verified ChatGPT connection, production approval, or ChatGPT Directory approval. The portable ZIP remains a candidate skeleton for operators to configure and validate. See [ChatGPT setup and security boundaries](CHATGPT.md), the [v0.8.0 release notes](product/05-release/release-notes-v0.8.0.md), and the [current validation report](evidence/validation-report-v0.8.0.md).
+This repository and its v0.8.1 GitHub Release are a public source distribution. They are not a public MCP deployment, a verified ChatGPT connection, production approval, or ChatGPT Directory approval. The portable ZIP remains a candidate skeleton for operators to configure and validate. See [ChatGPT setup and security boundaries](CHATGPT.md), the [v0.8.1 release notes](product/05-release/release-notes-v0.8.1.md), and the [current validation report](evidence/validation-report-v0.8.1.md).
 
 ## Source maintenance: YAML descriptions (2026-10-24)
 
@@ -20,7 +22,7 @@ The current `main` source fixes incomplete `SKILL.md` descriptions written with 
 
 The backend now requires **PyYAML 6.0.3**. Install `requirements.txt` into the same Python interpreter used by `scripts/run-dev.ps1` and `scripts/test.ps1`; set `SKILLSENTRA_PYTHON` to that interpreter when needed. The backend container and CI install the pinned dependency automatically. The standalone MCP gateway remains dependency-free.
 
-See the [maintenance notes](product/05-release/yaml-description-maintenance.md), [test plan](product/04-quality/test-plan-yaml-description.md) and [validation report](evidence/validation-yaml-description-20261024.md). This source maintenance change does not replace the existing v0.8.0 release tag or deploy a service.
+See the [maintenance notes](product/05-release/yaml-description-maintenance.md), [test plan](product/04-quality/test-plan-yaml-description.md) and [validation report](evidence/validation-yaml-description-20261024.md). This fix is included in the v0.8.1 source download. The historical v0.8.0 release stays available; no service is deployed by this release.
 
 ## What v0.8.0 adds
 
@@ -48,7 +50,7 @@ Real ChatGPT Developer Mode testing requires either [OpenAI Secure MCP Tunnel](h
 
 ## Compatibility and evidence boundary
 
-Passing unit, protocol and local browser tests demonstrates behavior only for the tested commit. It does not by itself prove official MCP Inspector interoperability, a working ChatGPT connection, public directory approval, production deployment or real-user value. Neither official MCP Inspector nor real ChatGPT has been recorded as passed for v0.8.0. Real ChatGPT evidence requires tool discovery and representative read/write journeys in ChatGPT Developer Mode against the exact deployed commit. Such evidence still does not authorize installation, update application, production deployment or directory publication.
+Passing unit, protocol and local browser tests demonstrates behavior only for the tested commit. It does not by itself prove official MCP Inspector interoperability, a working ChatGPT connection, public directory approval, production deployment or real-user value. Neither official MCP Inspector nor real ChatGPT has been recorded as passed for v0.8.1. Real ChatGPT evidence requires tool discovery and representative read/write journeys in ChatGPT Developer Mode against the exact deployed commit. Such evidence still does not authorize installation, update application, production deployment or directory publication.
 
 ChatGPT writes remain bounded by the existing tool schemas. State-changing tools require explicit confirmation, and proposal write-back remains bound to an exact request ID and context hash. A successful write is not acceptance, phase completion or release approval.
 
@@ -122,7 +124,7 @@ The v0.6.3 verification record is generated with the deterministic suite and bro
 
 ## Release boundary
 
-v0.8.0 is authorized for public GitHub source distribution. It does not close the production hard gates. Public production/GA, real-money movement, automatic Skill installation or update application, a public cloud MCP deployment, and ChatGPT Directory submission remain unauthorized.
+v0.8.1 is authorized for public GitHub source distribution. It does not close the production hard gates. Public production/GA, real-money movement, automatic Skill installation or update application, a public cloud MCP deployment, and ChatGPT Directory submission remain unauthorized.
 
 Remaining production blockers include real ChatGPT cloud connectivity, real-user outcome evidence, cryptographically bound approval receipts, production observability, and an environment with TLS, managed secrets, encrypted backups, restoration evidence, and independent human release authorization. Internal scores and local test results do not override those gates.
 
@@ -130,8 +132,8 @@ Remaining production blockers include real ChatGPT cloud connectivity, real-user
 
 - [Development guide](DEVELOPMENT.md)
 - [ChatGPT adapter guide](CHATGPT.md)
-- [v0.8.0 release notes](product/05-release/release-notes-v0.8.0.md)
-- [v0.8.0 validation report](evidence/validation-report-v0.8.0.md)
+- [v0.8.1 release notes](product/05-release/release-notes-v0.8.1.md)
+- [v0.8.1 validation report](evidence/validation-report-v0.8.1.md)
 - [Security policy](SECURITY.md)
 - [Third-party notices](THIRD_PARTY_NOTICES.md)
 

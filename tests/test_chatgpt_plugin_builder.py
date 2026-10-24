@@ -53,7 +53,7 @@ class ChatGPTPluginBuilderTests(unittest.TestCase):
                 agent = package.read("skills/skillsentra-for-chatgpt/agents/openai.yaml").decode("utf-8")
 
             self.assertEqual(plugin["name"], "skillsentra-for-chatgpt")
-            self.assertEqual(plugin["version"], "0.8.0")
+            self.assertEqual(plugin["version"], "0.8.1")
             self.assertEqual(mcp["$schema"], PORTABLE_MCP_SCHEMA)
             self.assertEqual(
                 mcp["mcpServers"]["skillsentra-for-chatgpt"],

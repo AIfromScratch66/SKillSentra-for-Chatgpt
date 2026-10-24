@@ -7,7 +7,7 @@
 - Display name: `SKillSentra for Chatgpt`
 - Chinese display name: `SKillSentra for Chatgpt（ChatGPT 专用协作版）`
 - Package ID: `skillsentra-for-chatgpt`
-- Version: `0.8.0`
+- Version: `0.8.1`
 - Short description: `Govern Skills with evidence`
 - Status: `Public source release`
 
@@ -102,17 +102,17 @@ State-changing tools require `confirmed: true` after explicit user confirmation.
 
 | Level | What it demonstrates | Current branch claim |
 |---|---|---|
-| Unit and contract tests | Python behavior and protocol contracts for one local state | Full local regression passed 243/243 for the tested implementation; exact receipts are in the validation report |
+| Unit and contract tests | Python behavior and protocol contracts for one local state | The YAML-fix implementation passed 259/259 locally; exact release-version results are bound by the v0.8.1 validation report |
 | Local HTTP integration | `/mcp` initialization, tool discovery, calls and negative security cases | Automated local coverage only; no official MCP Inspector claim |
 | Browser regression | Existing SkillSentra web journeys remain intact | Local Chromium and accessibility regression passed 22/22; the PR Chromium job also passed |
-| GitHub CI | Remote runners reproduce the committed checks | Final branch and PR test/package workflows passed; the tag workflow reruns them before prerelease publication |
+| GitHub CI | Remote runners reproduce the committed checks | The YAML-fix commit passed four CI jobs; v0.8.1 PR and tag workflows rerun the release checks before stable publication |
 | Real ChatGPT Developer Mode | ChatGPT discovers and uses the deployed endpoint | Not claimed without a real URL and connection record |
 | Public directory | OpenAI review and an explicit publish action completed | **NO_GO**; not submitted or authorized |
 | Real-user value | Representative users achieve measured outcomes | Not claimed |
 
 ## Release and rollback
 
-The authorized GitHub release path is a reviewed pull request into `main`, an annotated `v0.8.0` tag on the exact merged commit, and the controlled workflow-created stable GitHub Release. Do not tag an unmerged feature-branch commit: the workflow requires the tag to be an ancestor of the default branch. The GitHub Release publishes source and deterministic artifacts only; public MCP deployment, a real ChatGPT connection and ChatGPT Directory submission remain separate human-authorized operations and are currently **NO_GO**.
+The authorized GitHub release path is a reviewed pull request into `main`, an annotated `v0.8.1` tag on the exact merged commit, and the controlled workflow-created stable GitHub Release. Do not tag an unmerged feature-branch commit: the workflow requires the tag to be an ancestor of the default branch. The GitHub Release publishes source and deterministic artifacts only; public MCP deployment, a real ChatGPT connection and ChatGPT Directory submission remain separate human-authorized operations and are currently **NO_GO**.
 
 To roll back local development, stop the gateway and remove or disable the ChatGPT connection. Preserve append-only collaboration records for audit. Do not overwrite the database with an older backup after new writes; use the existing controlled restore procedure.
 

@@ -70,7 +70,7 @@ class APITests(unittest.TestCase):
 
         self.assertEqual(status, 200)
         self.assertEqual(body["data"]["database"], "ready")
-        self.assertEqual(body["data"]["version"], "0.8.0")
+        self.assertEqual(body["data"]["version"], "0.8.1")
         self.assertTrue(body["data"]["schema_version"])
         self.assertIn('id="ranking"', html)
         self.assertIn('src="marketplace.js?v=', html)

@@ -4,6 +4,8 @@ Baseline: `a3fc70d708d135861e22f19fc54f1585c7d3af83`. Scope: independent public 
 
 Environment: Windows, Python 3.12.14, PyYAML 6.0.3 installed into an isolated dependency directory, Node 24.19.0, Playwright 1.62.1 and local Chromium. Tests use temporary databases/artifact directories.
 
+Implementation under test: `b31374fc9a6fab71ac8e75714b12ec1c763500e4`. The following documentation-only update records its executed results; it does not change the application or test code.
+
 ## Executed results
 
 | Check | Result | Evidence |
@@ -15,9 +17,9 @@ Environment: Windows, Python 3.12.14, PyYAML 6.0.3 installed into an isolated de
 | Full Python suite, complete retest without concurrent browser run | PASS | 259 tests, 243.250 seconds. |
 | Python compilation, existing documentation checker, five frontend syntax checks and AI truth contracts | PASS | `scripts/test.ps1` completed its remaining checks; 6/6 truth contracts passed. |
 | Chromium journeys plus frontend truth contracts | PASS | 22/22 tests; 93.466 seconds. The six truth cases overlap with the previous row and are not additional unique tests. |
-| Touched-document links and workflow YAML | PASS | 32 local links across 7 changed/new Markdown documents; both workflow files parsed as YAML. |
+| Touched-document links and workflow YAML | PASS | Local links in the 7 changed/new Markdown documents checked separately, including the Chinese README; both workflow files parsed as YAML. |
 | Scoped diff | PASS | 16 files within the frozen task scope; no changes to the other SkillSentra checkout. |
-| Clean-source reconstruction | PENDING | To be executed from the committed implementation before pushing. |
+| Clean-source reconstruction | PASS | Built and source-verified 107 files from clean implementation commit `b31374f`; extracted to a fresh directory, freshly installed its pinned requirements, and executed Python in isolated mode. Parsing, registration, scanning and marketplace summary all preserved the complete Chinese description. |
 | Local Docker container execution | NOT RUN | Docker CLI exists, but Docker Desktop Linux engine pipe is absent. No container-runtime pass is claimed. |
 
 ## Reproduction and maintenance
@@ -34,6 +36,9 @@ Run `python -m pip install -r requirements.txt` in the same interpreter used for
 | Targeted regression | `03ccac949f8e6ede3cb754d00bec9a6629b683236b32f0561ae981b94812c991` |
 | Chromium and truth contracts | `4be0c830e0a9acb8568fb66fb125813d770482401b0ad8eb330bd783829a2c2f` |
 | First full-suite attempt | `3e285c4dcc41187c60b82944323f4e29ae8e75a6dfdabac2d11f53f552029ef0` |
+| Passing full-suite retest | `87b77bf88ad47684572d6bd1bd5430d67a74f285bde9a6c8ba8553cef1901b57` |
+
+Implementation validation archive: `skillsentra-for-chatgpt-0.8.0.zip`, 977,751 bytes, 107 files, SHA-256 `90cabadc2307a79a865e2e9e2601982c50e460db6c4ae427a8e97c5f1ea208f1`. This identifies the locally rebuilt implementation archive, not a replacement for the historical GitHub v0.8.0 release asset. Build manifest `source_dirty=false`; archive inventory, source bytes and hashes were verified. The archive contains `requirements.txt`; its SBOM lists required `PyYAML 6.0.3`.
 
 The original failed attempt is retained separately from the passing retest. These are local execution records; they are not independent trusted execution, production or real-user evidence.
 

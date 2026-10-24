@@ -40,4 +40,6 @@ powershell -ExecutionPolicy Bypass -File scripts/run-dev.ps1
 
 测试范围见[测试计划](../04-quality/test-plan-yaml-description.md)，实际结果见[验证报告](../../evidence/validation-yaml-description-20261024.md)。本次只针对已授权的公开源码仓库提交和推送；不更新其他 SkillSentra 副本、AI Devloop 配置、历史任务、用户数据库或生产服务。
 
+本地执行结果：24 项针对性测试、完整后端复测 259 项、浏览器与前端契约 22 项全部通过。干净提交的 107 文件源码包通过清单/摘要校验；在全新目录重新安装包内固定依赖后，解析、注册、扫描和目录摘要均保留完整中文说明。首次完整测试中的一次既有 HTTP 并发连接中断及复测过程保留在报告中。本机 Docker 引擎未启动，未记录本机容器运行通过。
+
 需要回退时，对本次修复提交执行常规 `git revert`，并从回退后的源重新构建；不要修改历史标签或覆盖用户数据。AI Devloop 原生工程门因历史任务绑定不一致保持 `BLOCKED`；用户已明确授权独立候选继续，测试结果不将该门改记为通过。

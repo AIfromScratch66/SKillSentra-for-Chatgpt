@@ -8,7 +8,7 @@ from pathlib import Path
 from app.database import Database
 from app.errors import AppError
 from app.repository import Repository
-from app.skill_engine import CANONICALIZATION_VERSION, SkillEngine, canonical_manifest
+from app.skill_engine import CANONICALIZATION_VERSION, SkillEngine, canonical_manifest, parse_skill_metadata
 
 
 class SkillEngineTests(unittest.TestCase):
@@ -44,6 +44,29 @@ class SkillEngineTests(unittest.TestCase):
             encoding="utf-8",
         )
         return root
+
+    def test_multiline_description_survives_registration_snapshot_and_scan(self) -> None:
+        root = self._write_source("character-design")
+        skill = root / "SKILL.md"
+        original = skill.read_text(encoding="utf-8")
+        original = original.replace(
+            "description: Use when a user needs a complete evidence-bound professional analysis and delivery review.\n",
+            "description: >\n  创建并保持一致的角色设计。\n  支持角色参考图、表情图和角色转视频。\n",
+        )
+        skill.write_text(original, encoding="utf-8")
+        original_bytes = skill.read_bytes()
+        expected = "创建并保持一致的角色设计。 支持角色参考图、表情图和角色转视频。\n"
+        source = self.engine.register_source(root)
+        self.assertEqual(source["metadata"]["description"], expected)
+        project = self.repository.create_project("character-design", "existing")
+        attached = self.engine.attach_source(project["id"], source["id"])
+        baseline_root = Path(attached["baseline"]["artifact_path"])
+        self.assertEqual(parse_skill_metadata(baseline_root / "SKILL.md")["description"], expected)
+        scan = self.engine.scan_path(baseline_root)
+        self.assertEqual(scan["status"], "passed")
+        self.assertNotIn("DESCRIPTION_THIN", {finding["code"] for finding in scan["findings"]})
+        self.assertEqual(skill.read_bytes(), original_bytes)
+        self.assertEqual((baseline_root / "SKILL.md").read_bytes(), original_bytes)
 
     @staticmethod
     def _template_payload() -> dict:

@@ -4,6 +4,8 @@ SKillSentra for Chatgpt includes or uses third-party software under the licenses
 
 Runtime and test dependencies are installed from their official package distributions rather than copied into this repository. The dependency inventory generated for each release is published as `sbom.cdx.json`.
 
+The backend runtime uses PyYAML 6.0.3 (MIT License), pinned in `requirements.txt`, for safe YAML frontmatter parsing. The standalone MCP gateway remains independent of this backend dependency.
+
 Notable development dependencies include:
 
 - Playwright and `playwright-core`, Apache License 2.0.

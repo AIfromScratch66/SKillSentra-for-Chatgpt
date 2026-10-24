@@ -19,7 +19,10 @@ INCLUDE_FILES = (
     "README.md", "README.zh-CN.md", "CHATGPT.md", "DEVELOPMENT.md", "SECURITY.md", "Dockerfile",
     "Dockerfile.chatgpt-mcp", "compose.yaml", "compose.chatgpt.yaml",
     ".env.example", ".env.production.example", ".env.chatgpt-mcp.example",
-    "package.json", "package-lock.json", "THIRD_PARTY_NOTICES.md",
+    "package.json", "package-lock.json", "requirements.txt", "THIRD_PARTY_NOTICES.md",
+    "product/04-quality/test-plan-yaml-description.md",
+    "product/05-release/yaml-description-maintenance.md",
+    "evidence/validation-yaml-description-20261024.md",
     "product/03-architecture/openapi-v0.4.yaml",
     "product/05-release/rollout-rollback-and-limitations.md",
 )
@@ -123,13 +126,21 @@ def build(output: Path, version: str) -> dict[str, Any]:
         }
         for name, version_value in sorted((package.get("devDependencies") or {}).items())
     ]
+    for requirement in (PROJECT_ROOT / "requirements.txt").read_text(encoding="utf-8").splitlines():
+        if not requirement.strip() or requirement.lstrip().startswith("#"):
+            continue
+        name, pinned_version = requirement.strip().split("==", 1)
+        components.append({
+            "type": "library", "name": name, "version": pinned_version, "scope": "required",
+            "purl": f"pkg:pypi/{name.lower()}@{pinned_version}",
+        })
     sbom = {
         "bomFormat": "CycloneDX", "specVersion": "1.5", "serialNumber": f"urn:uuid:{uuid.uuid5(uuid.NAMESPACE_URL, f'skillsentra-for-chatgpt:{archive_digest}')}",
         "version": 1,
         "metadata": {
             "timestamp": generated_at,
             "component": {"type": "application", "name": PRODUCT_NAME, "version": version, "hashes": [{"alg": "SHA-256", "content": archive_digest}]},
-            "properties": [{"name": "skillsentra.runtime", "value": "Python 3.12 standard library"}],
+            "properties": [{"name": "skillsentra.runtime", "value": "Python 3.12 with pinned requirements.txt dependencies"}],
         },
         "components": components,
     }

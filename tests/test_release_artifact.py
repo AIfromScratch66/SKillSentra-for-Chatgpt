@@ -42,6 +42,12 @@ class ReleaseArtifactTests(unittest.TestCase):
             self.assertTrue(result["verified"])
             self.assertTrue(result["source_verified"])
 
+            sbom = json.loads((Path(first) / "sbom.cdx.json").read_text(encoding="utf-8"))
+            self.assertIn(
+                {"type": "library", "name": "PyYAML", "version": "6.0.3", "scope": "required", "purl": "pkg:pypi/pyyaml@6.0.3"},
+                sbom["components"],
+            )
+
             archive = Path(first) / str(first_manifest["artifact"]["path"])
             with zipfile.ZipFile(archive) as package:
                 names = set(package.namelist())
@@ -60,6 +66,7 @@ class ReleaseArtifactTests(unittest.TestCase):
                 "evidence/validation-report-v0.8.0.md",
                 "evidence/validation-report-v0.8.0.md",
                 "THIRD_PARTY_NOTICES.md",
+                "requirements.txt",
             ):
                 self.assertIn(required, names)
             self.assertEqual(packaged_package["name"], "skillsentra-for-chatgpt")

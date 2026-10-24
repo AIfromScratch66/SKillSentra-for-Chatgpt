@@ -14,6 +14,14 @@ The dedicated product name is **SKillSentra for Chatgpt** and the short descript
 
 This repository and its v0.8.0 GitHub Release are a public source distribution. They are not a public MCP deployment, a verified ChatGPT connection, production approval, or ChatGPT Directory approval. The portable ZIP remains a candidate skeleton for operators to configure and validate. See [ChatGPT setup and security boundaries](CHATGPT.md), the [v0.8.0 release notes](product/05-release/release-notes-v0.8.0.md), and the [current validation report](evidence/validation-report-v0.8.0.md).
 
+## Source maintenance: YAML descriptions (2026-10-24)
+
+The current `main` source fixes incomplete `SKILL.md` descriptions written with YAML folded (`>`, `>-`, `>+`) or literal (`|`, `|-`, `|+`) blocks. It also handles indentation indicators, quoted multiline text, UTF-8 BOM and CRLF. Only standalone frontmatter fences delimit metadata; text such as `---` inside a description stays intact. Invalid YAML and unsafe tags do not become partial metadata.
+
+The backend now requires **PyYAML 6.0.3**. Install `requirements.txt` into the same Python interpreter used by `scripts/run-dev.ps1` and `scripts/test.ps1`; set `SKILLSENTRA_PYTHON` to that interpreter when needed. The backend container and CI install the pinned dependency automatically. The standalone MCP gateway remains dependency-free.
+
+See the [maintenance notes](product/05-release/yaml-description-maintenance.md), [test plan](product/04-quality/test-plan-yaml-description.md) and [validation report](evidence/validation-yaml-description-20261024.md). This source maintenance change does not replace the existing v0.8.0 release tag or deploy a service.
+
 ## What v0.8.0 adds
 
 - A dependency-free, stateless JSON-response MCP-over-HTTP preview at `POST /mcp`, reusing the same 19 versioned MCP tool definitions and execution layer as the stdio bridge. GET/SSE and session lifecycle are not implemented.
@@ -27,6 +35,7 @@ This repository and its v0.8.0 GitHub Release are a public source distribution. 
 Start SkillSentra first, then start the MCP gateway in a second terminal:
 
 ```powershell
+python -m pip install -r requirements.txt
 powershell -ExecutionPolicy Bypass -File scripts/run-dev.ps1
 $env:SKILLSENTRA_CHATGPT_MCP_AUTH_TOKEN = "<generated gateway secret>"
 $env:SKILLSENTRA_API_TOKEN = "<different SkillSentra service token>"

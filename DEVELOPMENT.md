@@ -33,8 +33,11 @@
 在项目目录执行：
 
 ```powershell
+python -m pip install -r requirements.txt
 powershell -ExecutionPolicy Bypass -File scripts/run-dev.ps1
 ```
+
+2026-10-24 源码维护新增 `PyYAML==6.0.3`，用于安全解析 YAML frontmatter。依赖必须安装到脚本实际选择的 Python 中：若使用系统 Python 安装，可通过 `$env:SKILLSENTRA_PYTHON = (Get-Command python).Source` 显式选择该解释器；若使用下面的 Codex 随附运行时，应使用其完整路径执行 `-m pip install -r requirements.txt`。运行确定性测试、浏览器测试或直接执行 `python -m app.server` 前也需要安装此依赖。完整示例与行为边界见[维护说明](product/05-release/yaml-description-maintenance.md)。
 
 启动和测试脚本在可用时优先使用 Codex 随附的 Python 运行时，再回退到系统 Python，避免 WindowsApps 的无效 Python 占位程序导致服务无法启动。
 

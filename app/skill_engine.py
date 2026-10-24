@@ -8,6 +8,8 @@ import zipfile
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 from .database import json_dumps
 from .errors import AppError
 from .evaluation import build_template_eval_pack, case_input_digest, compute_dataset_digest, evaluate_static_contract, load_eval_pack, stable_case_id
@@ -85,17 +87,31 @@ def canonical_manifest(root: Path) -> dict[str, Any]:
     }
 
 
+class _SkillMetadataLoader(yaml.SafeLoader):
+    # Frontmatter metadata is textual: keep names like "on" and versions like
+    # "001.20" intact instead of implicitly coercing them to bools/numbers.
+    yaml_implicit_resolvers = {}
+
+
 def parse_skill_metadata(skill_file: Path) -> dict[str, str]:
     text = skill_file.read_text(encoding="utf-8", errors="replace")
     metadata: dict[str, str] = {}
-    if text.startswith("---"):
-        parts = text.split("---", 2)
-        if len(parts) == 3:
-            for line in parts[1].splitlines():
-                if ":" not in line:
-                    continue
-                key, value = line.split(":", 1)
-                metadata[key.strip()] = value.strip().strip("\"'")
+    lines = text.removeprefix("\ufeff").splitlines(keepends=True)
+    if lines and lines[0].rstrip("\r\n").rstrip(" \t") == "---":
+        for index, line in enumerate(lines[1:], start=1):
+            if line.rstrip("\r\n").rstrip(" \t") != "---":
+                continue
+            try:
+                fields = yaml.load("".join(lines[1:index]), Loader=_SkillMetadataLoader)
+            except (yaml.YAMLError, RecursionError):
+                # Invalid input must not become partially trusted metadata.
+                fields = None
+            if isinstance(fields, dict):
+                metadata = {
+                    key: value for key, value in fields.items()
+                    if isinstance(key, str) and isinstance(value, str)
+                }
+            break
     metadata["body_preview"] = re.sub(r"\s+", " ", text)[:360]
     return metadata
 

@@ -11,6 +11,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN groupadd --system skillsentra && useradd --system --gid skillsentra --home /app skillsentra
 WORKDIR /app
 
+COPY requirements.txt ./
+RUN python -m pip install --no-cache-dir -r requirements.txt
+
 COPY --chown=skillsentra:skillsentra app ./app
 COPY --chown=skillsentra:skillsentra demo-apple ./demo-apple
 COPY --chown=skillsentra:skillsentra sample-skills ./sample-skills

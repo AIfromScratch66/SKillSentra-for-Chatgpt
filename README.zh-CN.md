@@ -12,6 +12,14 @@
 
 本仓库及 v0.8.0 GitHub Release 是公开源码发行版；它不等于公网 MCP 已部署、真实 ChatGPT 已联通、生产批准或 ChatGPT Directory 审核通过。便携 ZIP 仍是需要由操作方配置并验证的候选骨架。详见 [ChatGPT 配置与安全边界](CHATGPT.md)、[v0.8.0 版本说明](product/05-release/release-notes-v0.8.0.md)和[本轮验证报告](evidence/validation-report-v0.8.0.md)。
 
+## 源码维护：YAML 多行说明（2026-10-24）
+
+当前 `main` 源码已修复 `SKILL.md` 中 YAML 折叠文本（`>`、`>-`、`>+`）和保留换行文本（`|`、`|-`、`|+`）的说明读取不完整问题，同时支持缩进指示、带引号的多行文本、UTF-8 BOM 和 CRLF。仅独立成行的 frontmatter 分隔符用于划定元数据，说明中的 `---` 不再导致截断。无效 YAML 和不安全标签不会被读取成部分有效元数据。
+
+后端新增固定依赖 **PyYAML 6.0.3**。请把 `requirements.txt` 安装到启动、测试脚本实际使用的同一个 Python 中；需要时通过 `SKILLSENTRA_PYTHON` 指定该解释器。后端容器和 CI 已包含依赖安装步骤，独立 MCP 网关仍无额外依赖。
+
+详见[维护说明](product/05-release/yaml-description-maintenance.md)、[测试计划](product/04-quality/test-plan-yaml-description.md)和[验证报告](evidence/validation-yaml-description-20261024.md)。本次为源码维护，不替换已有 v0.8.0 发布标签，也不部署服务。
+
 ## v0.8.0 新增能力
 
 - 新增 `POST /mcp` 的无额外依赖、无状态 JSON 响应式 MCP-over-HTTP 预览网关，与 stdio 桥复用同一组 19 项版本化工具定义和执行层；尚未实现 GET/SSE 和会话生命周期。
@@ -25,6 +33,7 @@
 先启动 SkillSentra，再在第二个终端启动 MCP 网关：
 
 ```powershell
+python -m pip install -r requirements.txt
 powershell -ExecutionPolicy Bypass -File scripts/run-dev.ps1
 $env:SKILLSENTRA_CHATGPT_MCP_AUTH_TOKEN = "<生成的网关密钥>"
 $env:SKILLSENTRA_API_TOKEN = "<另一个 SkillSentra 服务令牌>"
